@@ -1,14 +1,29 @@
-import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import { content, getCaseBySlug } from '../content';
+import { metaPagina } from '../lib/meta';
 import type { Route } from './+types/CaseDetail';
+import NotFound, { metaNoEncontrado } from './NotFound';
 
 export function meta({ params }: Route.MetaArgs) {
-  return [
-    { title: `Caso ${params.slug} | Portfolio` },
-    { property: 'og:title', content: `Caso ${params.slug}` },
-    { property: 'og:image', content: '/og/general.png' },
-  ];
+  const caso = getCaseBySlug(params.slug);
+  if (!caso) return metaNoEncontrado();
+  return metaPagina({
+    titulo: `${caso.seo.titulo} | ${content.sitio.nombre}`,
+    descripcion: caso.seo.descripcion,
+    imagen: caso.seo.ogImagen,
+  });
 }
 
-export default function CaseDetail() {
-  return <Button variant="contained">Spike caso</Button>;
+// Plantilla provisoria: el slice 4 agrega problema, arquitectura, decisiones y resultados.
+export default function CaseDetail({ params }: Route.ComponentProps) {
+  const caso = getCaseBySlug(params.slug);
+  if (!caso) return <NotFound />;
+  return (
+    <Container maxWidth="md" sx={{ py: 6 }}>
+      <Typography variant="h3" component="h1">
+        {caso.titulo}
+      </Typography>
+    </Container>
+  );
 }
