@@ -1,7 +1,11 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { theme } from './theme';
+import type { CssVarsTheme } from '@mui/material/styles';
+import { theme as temaBase } from './theme';
+
+// createTheme con cssVariables devuelve un tema con colorSchemes, pero su tipo publico no lo declara.
+const theme = temaBase as unknown as CssVarsTheme;
 
 // Contraste segun WCAG 2.x: (L1 + 0,05) / (L2 + 0,05), con L = luminancia relativa.
 function luminancia(hex: string): number {

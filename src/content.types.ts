@@ -42,5 +42,28 @@ export interface Caso {
 }
 
 export interface Contenido {
+  sitio: Sitio;
+  interfaz: TextosInterfaz;
+  noEncontrado: TextosNoEncontrado;
   casos: Caso[];
+}
+
+export interface Sitio {
+  nombre: string;
+  titulo: string;
+  descripcion: string;
+  // URL publica absoluta (para Open Graph). Pendiente hasta conocer el dominio de *.vercel.app.
+  url: string;
+}
+
+export interface TextosInterfaz {
+  cambiarTema: string;
+  pie: string;
+}
+
+export interface TextosNoEncontrado {
+  titulo: string;
+  descripcion: string;
+  enlace: string;
+  seoTitulo: string;
 }

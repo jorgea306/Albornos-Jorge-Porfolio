@@ -20,6 +20,22 @@ function casoBase(
 }
 
 export const content: Contenido = {
+  sitio: {
+    nombre: 'Jorge Albornos',
+    titulo: 'Jorge Albornos | Agentes de IA y automatizaciones',
+    descripcion: COMPLETAR,
+    url: COMPLETAR,
+  },
+  interfaz: {
+    cambiarTema: 'Cambiar entre tema claro y oscuro',
+    pie: '© 2026 Jorge Albornos',
+  },
+  noEncontrado: {
+    titulo: 'Página no encontrada',
+    descripcion: 'La dirección que abriste no existe o cambió de lugar.',
+    enlace: 'Ir al inicio',
+    seoTitulo: 'Página no encontrada | Jorge Albornos',
+  },
   casos: [
     casoBase({ slug: 'carga-masiva-productos', titulo: 'Carga masiva de productos', estado: 'publicado', variante: 'completa' }),
     casoBase({ slug: 'plataforma-agentes-ia', titulo: 'Plataforma de agentes de IA multiempresa', estado: 'publicado', variante: 'completa' }),
