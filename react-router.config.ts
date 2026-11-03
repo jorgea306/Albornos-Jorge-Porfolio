@@ -1,7 +1,8 @@
 import type { Config } from '@react-router/dev/config';
+import { content } from './src/content';
 
-// Provisorio (tarea 1.2): se reemplaza en 1.8 por los slugs de src/content.ts.
-const rutasPrerender = ['/', '/casos/carga-masiva-productos'];
+// Las rutas a prerenderizar salen de src/content.ts: un caso nuevo suma su pagina sin tocar el router.
+const rutasPrerender = ['/', ...content.casos.map((caso) => `/casos/${caso.slug}`)];
 
 export default {
   appDirectory: 'src',
