@@ -1,17 +1,19 @@
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import Link from '@mui/material/Link';
 import { ThemeProvider } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import { Link as RouterLink, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
-import ThemeToggle from './components/ThemeToggle';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, type LinksFunction } from 'react-router';
+import SiteFooter from './components/layout/SiteFooter';
+import SiteHeader from './components/layout/SiteHeader';
 import { content } from './content';
-import './fuentes';
+import { precargaFuentes } from './fuentes';
 import { theme } from './theme';
 
-const { sitio, interfaz } = content;
+const { navegacion } = content;
+
+// Precarga los .woff2 latinos de Bricolage e Inter para que el h1 no espere al CSS de la fuente.
+export const links: LinksFunction = () => precargaFuentes;
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -28,30 +30,34 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-            <Box component="header" sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Container
-                maxWidth="lg"
-                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 1 }}
-              >
-                <Link component={RouterLink} to="/" underline="none">
-                  <Typography variant="subtitle1" component="span" sx={{ fontWeight: 600 }}>
-                    {sitio.nombre}
-                  </Typography>
-                </Link>
-                <ThemeToggle />
-              </Container>
-            </Box>
-            <Box component="main" sx={{ flex: 1 }}>
+          {/* id="arriba": destino de "Volver arriba", que existe también en las páginas de detalle. */}
+          <Box id="arriba" sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            {/* Primer foco al presionar Tab: queda fuera de pantalla hasta recibirlo. */}
+            <Link
+              href="#contenido"
+              sx={{
+                position: 'absolute',
+                top: 8,
+                left: 8,
+                zIndex: 'tooltip',
+                px: 2,
+                py: 1.5,
+                borderRadius: 1,
+                bgcolor: 'background.paper',
+                border: 1,
+                borderColor: 'divider',
+                transform: 'translateY(-200%)',
+                '&:focus-visible': { transform: 'none' },
+              }}
+            >
+              {navegacion.saltarAlContenido}
+            </Link>
+            <SiteHeader />
+            {/* tabIndex -1: el enlace "Saltar al contenido" puede dejar el foco aquí sin sumar una parada de Tab. */}
+            <Box component="main" id="contenido" tabIndex={-1} sx={{ flex: 1, '&&:focus-visible': { outline: 'none' } }}>
               {children}
             </Box>
-            <Box component="footer" sx={{ borderTop: 1, borderColor: 'divider', py: 3 }}>
-              <Container maxWidth="lg">
-                <Typography variant="body2" color="text.secondary">
-                  {interfaz.pie}
-                </Typography>
-              </Container>
-            </Box>
+            <SiteFooter />
           </Box>
         </ThemeProvider>
         <ScrollRestoration />

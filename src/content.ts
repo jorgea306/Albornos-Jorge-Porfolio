@@ -1,13 +1,20 @@
-import type { Caso, Contenido } from './content.types';
+import type { Ancla, Caso, Contenido } from './content.types';
 
 // Marca todo dato que falta. content.test.ts y, mas adelante, scripts/listar-pendientes.mjs lo buscan.
 export const COMPLETAR = '[COMPLETAR]';
 
 const OG_GENERAL = '/og/general.png';
 
-// Anclas de las secciones del Inicio. Los botones del Hero apuntan a ellas.
-// 'contacto' todavia no existe en la pagina: la seccion llega en el slice 3.
-const ANCLA = { casos: 'casos', contacto: 'contacto' };
+// Anclas de las secciones del Inicio. La barra, el pie y los botones del Hero apuntan a ellas.
+// 'proceso', 'sobre-mi' y 'contacto' todavia no existen en la pagina: las secciones llegan en el slice 6.
+const ANCLA = {
+  inicio: 'inicio',
+  servicios: 'servicios',
+  casos: 'casos',
+  proceso: 'proceso',
+  sobreMi: 'sobre-mi',
+  contacto: 'contacto',
+} satisfies Record<string, Ancla>;
 
 // Los textos largos de cada caso se completan en los slices 4 y 5; aqui la identidad, el estado y el resumen de la tarjeta.
 function casoBase(
@@ -30,6 +37,27 @@ export const content: Contenido = {
       'Desarrollador full stack freelance en Córdoba, Argentina. Agentes de IA, APIs y automatizaciones que le ahorran horas de trabajo a tu negocio.',
     url: COMPLETAR,
   },
+  navegacion: {
+    logo: 'JA',
+    irAlInicio: 'Jorge Albornos, ir al inicio',
+    etiquetaSecciones: 'Secciones del sitio',
+    enlaces: [
+      { texto: 'Servicios', ancla: ANCLA.servicios },
+      { texto: 'Casos', ancla: ANCLA.casos },
+      { texto: 'Proceso', ancla: ANCLA.proceso },
+      { texto: 'Sobre mí', ancla: ANCLA.sobreMi },
+    ],
+    hablemos: 'Hablemos',
+    abrirMenu: 'Abrir el menú de secciones',
+    volverArriba: 'Volver arriba',
+    todosLosCasos: '← Todos los casos',
+    saltarAlContenido: 'Saltar al contenido',
+    migas: { etiqueta: 'Migas de pan', casos: 'Casos' },
+  },
+  redes: {
+    linkedin: { texto: 'LinkedIn', url: COMPLETAR },
+    github: { texto: 'GitHub', url: 'https://github.com/jorgea306' },
+  },
   inicio: {
     hero: {
       etiqueta: 'Desarrollador full stack freelance · Córdoba, Argentina',
@@ -38,7 +66,7 @@ export const content: Contenido = {
       secundario: { texto: 'Contame tu problema', destino: `#${ANCLA.contacto}` },
     },
     servicios: {
-      id: 'servicios',
+      id: ANCLA.servicios,
       titulo: 'Servicios',
       items: [
         {
@@ -86,7 +114,7 @@ export const content: Contenido = {
   },
   interfaz: {
     cambiarTema: 'Cambiar entre tema claro y oscuro',
-    pie: '© 2026 Jorge Albornos',
+    pie: '© 2026 Jorge Albornos · Córdoba, Argentina',
   },
   noEncontrado: {
     titulo: 'Página no encontrada',

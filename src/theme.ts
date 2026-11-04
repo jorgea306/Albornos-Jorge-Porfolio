@@ -81,6 +81,7 @@ export const theme = createTheme({
         },
       }),
     },
+    MuiIconButton: { styleOverrides: { root: { minWidth: TOQUE_MINIMO, minHeight: TOQUE_MINIMO } } },
     MuiCard: { styleOverrides: { root: { borderRadius: radio.tarjeta } } },
     MuiContainer: {
       styleOverrides: {

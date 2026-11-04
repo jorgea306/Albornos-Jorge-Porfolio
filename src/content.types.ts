@@ -43,6 +43,8 @@ export interface Caso {
 
 export interface Contenido {
   sitio: Sitio;
+  navegacion: Navegacion;
+  redes: Redes;
   inicio: Inicio;
   interfaz: TextosInterfaz;
   noEncontrado: TextosNoEncontrado;
@@ -117,4 +119,37 @@ export interface TextosNoEncontrado {
   descripcion: string;
   enlace: string;
   seoTitulo: string;
+}
+
+// Anclas fijas del Inicio. La barra y el pie enlazan a ellas con un enlace del tipo "/#casos" desde cualquier ruta.
+export type Ancla = 'inicio' | 'servicios' | 'casos' | 'proceso' | 'sobre-mi' | 'contacto';
+
+export interface EnlaceAncla {
+  texto: string;
+  ancla: Ancla;
+}
+
+// Textos de la barra fija, el menu movil, las migas, el pie y el enlace para saltar al contenido.
+export interface Navegacion {
+  // Iniciales del logo; el nombre completo va en sitio.nombre.
+  logo: string;
+  irAlInicio: string;
+  etiquetaSecciones: string;
+  enlaces: EnlaceAncla[];
+  hablemos: string;
+  abrirMenu: string;
+  volverArriba: string;
+  todosLosCasos: string;
+  saltarAlContenido: string;
+  migas: { etiqueta: string; casos: string };
+}
+
+export interface EnlaceExterno {
+  texto: string;
+  url: string;
+}
+
+export interface Redes {
+  linkedin: EnlaceExterno;
+  github: EnlaceExterno;
 }

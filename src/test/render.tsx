@@ -5,10 +5,11 @@ import { MemoryRouter } from 'react-router';
 import { theme } from '../theme';
 
 // Muestra un componente con el tema real y un enrutador en memoria (los enlaces necesitan ambos).
-export function mostrarConTema(ui: ReactElement) {
+// `ruta` fija la dirección inicial: la barra elige su variante según ella.
+export function mostrarConTema(ui: ReactElement, ruta = '/') {
   return render(
     <ThemeProvider theme={theme}>
-      <MemoryRouter>{ui}</MemoryRouter>
+      <MemoryRouter initialEntries={[ruta]}>{ui}</MemoryRouter>
     </ThemeProvider>,
   );
 }
