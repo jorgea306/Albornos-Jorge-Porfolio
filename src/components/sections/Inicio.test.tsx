@@ -18,12 +18,20 @@ describe('Hero', () => {
 });
 
 describe('Services', () => {
-  it('muestra exactamente 4 tarjetas', () => {
-    mostrarConTema(<Services />);
+  it('muestra el encabezado y exactamente 4 tarjetas con ícono oculto y etiquetas', () => {
+    const { container } = mostrarConTema(<Services />);
+    const { encabezado } = servicios;
+    expect(screen.getByText(encabezado.etiqueta)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: encabezado.titulo })).toBeInTheDocument();
+    expect(screen.getByText(encabezado.bajada!)).toBeInTheDocument();
     expect(screen.getAllByRole('article')).toHaveLength(4);
     for (const servicio of servicios.items) {
       expect(screen.getByRole('heading', { level: 3, name: servicio.titulo })).toBeInTheDocument();
+      for (const etiqueta of servicio.etiquetas) expect(screen.getAllByText(etiqueta).length).toBeGreaterThan(0);
     }
+    const iconos = container.querySelectorAll('svg');
+    expect(iconos).toHaveLength(4);
+    for (const icono of iconos) expect(icono).toHaveAttribute('aria-hidden', 'true');
   });
 });
 

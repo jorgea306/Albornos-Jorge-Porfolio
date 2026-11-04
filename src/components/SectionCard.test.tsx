@@ -25,4 +25,10 @@ describe('SectionCard', () => {
     mostrarConTema(<SectionCard {...base} etiqueta="Etiqueta de prueba" />);
     expect(screen.getByText('Etiqueta de prueba')).toBeInTheDocument();
   });
+
+  it('muestra el ícono y las etiquetas cuando se indican', () => {
+    mostrarConTema(<SectionCard {...base} icono={<svg aria-hidden="true" data-testid="icono" />} etiquetas={['Uno', 'Dos']} />);
+    expect(screen.getByTestId('icono')).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.getAllByRole('listitem').map((li) => li.textContent)).toEqual(['Uno', 'Dos']);
+  });
 });

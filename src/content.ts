@@ -67,26 +67,39 @@ export const content: Contenido = {
     },
     servicios: {
       id: ANCLA.servicios,
-      titulo: 'Servicios',
+      encabezado: {
+        etiqueta: '01 / SERVICIOS',
+        titulo: 'Qué puedo resolver para vos',
+        bajada:
+          'Desde un script que ahorra una tarde de carga manual hasta una plataforma de agentes para varias empresas.',
+      },
       items: [
         {
           titulo: 'Agentes de IA',
           descripcion:
             'Asistentes que atienden consultas y ejecutan tareas dentro de tus sistemas, con registro de cada acción.',
+          icono: 'agente',
+          etiquetas: ['WhatsApp', 'Web', 'Herramientas'],
         },
         {
           titulo: 'APIs con NestJS y Node',
           descripcion:
             'Servicios de backend que conectan tu negocio con otras aplicaciones, con acceso seguro y datos ordenados.',
+          icono: 'api',
+          etiquetas: ['REST', 'JWT', 'OAuth2'],
         },
         {
           titulo: 'Interfaces con React',
           descripcion: 'Paneles y sitios web rápidos, pensados para verse bien en el celular y en la computadora.',
+          icono: 'interfaz',
+          etiquetas: ['Dashboards', 'Landings', 'Apps'],
         },
         {
           titulo: 'Automatizaciones',
           descripcion:
             'Tareas repetitivas que se ejecutan solas: cargas de datos, avisos e integraciones entre sistemas.',
+          icono: 'automatizacion',
+          etiquetas: ['Scripts', 'Webhooks', 'Cron'],
         },
       ],
     },

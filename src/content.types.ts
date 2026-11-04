@@ -65,6 +65,13 @@ export interface Enlace {
   destino: string;
 }
 
+// Cabecera de una seccion del Inicio: etiqueta mono ("01 / SERVICIOS"), titulo h2 y bajada opcional.
+export interface Encabezado {
+  etiqueta: string;
+  titulo: string;
+  bajada?: string;
+}
+
 // Cada linea indica su rol con texto (etiqueta), no solo con color. El tipo solo cambia el estilo.
 export interface LineaEjemplo {
   tipo: 'comando' | 'entrada' | 'evento' | 'salida' | 'ok';
@@ -87,14 +94,18 @@ export interface TextosHero {
   secundario: Enlace;
 }
 
+export type IconoServicio = 'agente' | 'api' | 'interfaz' | 'automatizacion';
+
 export interface Servicio {
   titulo: string;
   descripcion: string;
+  icono: IconoServicio;
+  etiquetas: string[];
 }
 
 export interface TextosServicios {
   id: string;
-  titulo: string;
+  encabezado: Encabezado;
   items: Servicio[];
 }
 
