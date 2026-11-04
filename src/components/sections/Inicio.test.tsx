@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { content } from '../../content';
 import { mostrarConTema } from '../../test/render';
@@ -8,12 +8,23 @@ import Stack from './Stack';
 
 const { hero, servicios, stack } = content.inicio;
 
+const tituloCompleto = `${hero.titulo.antes}${hero.titulo.resaltado}${hero.titulo.despues}`;
+
 describe('Hero', () => {
-  it('muestra el titulo como h1 y los botones llevan a Casos y Contacto', () => {
+  it('muestra el h1 completo (con el resaltado dentro) y los botones llevan a Casos y Contacto', () => {
     mostrarConTema(<Hero />);
-    expect(screen.getByRole('heading', { level: 1, name: hero.titulo })).toBeInTheDocument();
+    const h1 = screen.getByRole('heading', { level: 1, name: tituloCompleto });
+    expect(within(h1).getByText(hero.titulo.resaltado).tagName).toBe('MARK');
     expect(screen.getByRole('link', { name: hero.principal.texto })).toHaveAttribute('href', '#casos');
     expect(screen.getByRole('link', { name: hero.secundario.texto })).toHaveAttribute('href', '#contacto');
+  });
+
+  it('muestra la etiqueta, la descripción y la consola con su rótulo', () => {
+    mostrarConTema(<Hero />);
+    expect(screen.getByText(hero.etiqueta)).toBeInTheDocument();
+    expect(screen.getByText(hero.descripcion)).toBeInTheDocument();
+    expect(screen.getByRole('figure')).toHaveTextContent(content.interfaz.ejemploIlustrativo);
+    expect(screen.getAllByRole('listitem')).toHaveLength(hero.consola.lineas.length);
   });
 });
 

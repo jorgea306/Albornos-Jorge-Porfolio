@@ -89,9 +89,23 @@ export interface EjemploIlustrativo {
 
 export interface TextosHero {
   etiqueta: string;
-  titulo: string;
+  // El texto resaltado va dentro del mismo h1, para que se lea como una sola frase.
+  titulo: { antes: string; resaltado: string; despues: string };
+  descripcion: string;
   principal: Enlace;
   secundario: Enlace;
+  consola: EjemploIlustrativo;
+}
+
+export interface DatoDestacado {
+  valor: string;
+  descripcion: string;
+}
+
+export interface TextosDestacados {
+  // Nombre accesible de la franja (no tiene titulo visible).
+  etiqueta: string;
+  items: DatoDestacado[];
 }
 
 export type IconoServicio = 'agente' | 'api' | 'interfaz' | 'automatizacion';
@@ -130,6 +144,7 @@ export interface TextosStack {
 
 export interface Inicio {
   hero: TextosHero;
+  destacados: TextosDestacados;
   servicios: TextosServicios;
   casos: TextosCasos;
   stack: TextosStack;

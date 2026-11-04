@@ -1,5 +1,6 @@
 import Cases from '../components/sections/Cases';
 import Hero from '../components/sections/Hero';
+import Highlights from '../components/sections/Highlights';
 import Services from '../components/sections/Services';
 import Stack from '../components/sections/Stack';
 import { content } from '../content';
@@ -13,11 +14,12 @@ export function meta() {
   });
 }
 
-// Faltan Experiencia y Contacto: llegan en el slice 3 (el orden final lo fija ese slice).
+// Faltan Proceso, Sobre mí y Contacto: llegan en el slice 6, que fija el orden final.
 export default function Home() {
   return (
     <>
       <Hero />
+      <Highlights />
       <Services />
       <Cases />
       <Stack />

@@ -101,7 +101,8 @@ describe('acento unico', () => {
         return statSync(ruta).isDirectory() ? recorrer(ruta) : [ruta];
       });
     const infractores = recorrer(join(process.cwd(), 'src'))
-      .filter((ruta) => /\.(ts|tsx|css)$/.test(ruta) && !/\.test\.tsx?$/.test(ruta) && !ruta.endsWith('theme.ts'))
+      // content.ts queda afuera: la consola del Hero muestra el identificador de auditoría "#a91f", que no es un color.
+      .filter((ruta) => /\.(ts|tsx|css)$/.test(ruta) && !/\.test\.tsx?$/.test(ruta) && !/(theme|content)\.ts$/.test(ruta))
       .filter((ruta) => /#[0-9a-f]{3,8}\b/i.test(readFileSync(ruta, 'utf8')));
     expect(infractores).toEqual([]);
   });
