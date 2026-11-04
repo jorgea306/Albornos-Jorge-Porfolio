@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run verify",
   "outputDirectory": "build/client",
   "rewrites": [{ "source": "/(.*)", "destination": "/__spa-fallback.html" }]
 }
