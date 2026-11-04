@@ -1,5 +1,7 @@
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import Cases from '../components/sections/Cases';
+import Hero from '../components/sections/Hero';
+import Services from '../components/sections/Services';
+import Stack from '../components/sections/Stack';
 import { content } from '../content';
 import { metaPagina } from '../lib/meta';
 
@@ -11,13 +13,14 @@ export function meta() {
   });
 }
 
-// Pagina provisoria: el slice 2 agrega Hero, Servicios, Casos y Stack.
+// Faltan Experiencia y Contacto: llegan en el slice 3 (el orden final lo fija ese slice).
 export default function Home() {
   return (
-    <Container maxWidth="md" sx={{ py: 6 }}>
-      <Typography variant="h2" component="h1">
-        {content.sitio.nombre}
-      </Typography>
-    </Container>
+    <>
+      <Hero />
+      <Services />
+      <Cases />
+      <Stack />
+    </>
   );
 }
