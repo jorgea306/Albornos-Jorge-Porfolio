@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { Link as RouterLink, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 import ThemeToggle from './components/ThemeToggle';
 import { content } from './content';
+import './fuentes';
 import { theme } from './theme';
 
 const { sitio, interfaz } = content;

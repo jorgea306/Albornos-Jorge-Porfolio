@@ -1,4 +1,3 @@
-import '@fontsource-variable/inter';
 import { createTheme } from '@mui/material/styles';
 
 // Unico lugar donde se definen los colores. Paleta "Salvia y crema" del diseno de Jorge.
