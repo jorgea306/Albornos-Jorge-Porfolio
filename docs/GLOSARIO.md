@@ -29,3 +29,6 @@ Términos técnicos que aparecen en los artefactos del portfolio, explicados con
 | `prefers-reduced-motion` | Preferencia del sistema operativo para pedir menos animaciones. Si está activa, la consola del Hero muestra todas sus líneas de entrada, sin aparecer de a una. |
 | IntersectionObserver | API del navegador que avisa cuándo un elemento entra en pantalla. El índice "En este caso" la usa para resaltar el artículo que se está leyendo. |
 | Module augmentation (ampliación de tipos) | Técnica de TypeScript para sumar claves a los tipos de una librería, como una clave de paleta propia en MUI. El diseño la evita reusando claves existentes. |
+| `figure` y `figcaption` | Etiquetas HTML para un bloque con su leyenda. `IllustrativeExample` las usa para que el lector de pantalla anuncie la consola del Hero junto con el rótulo "Ejemplo ilustrativo". |
+| Pendiente visible | Un `[COMPLETAR]` que se ve en pantalla, en un atributo como `href` o en el `<head>`. `scripts/verificar-build.mjs` lo detecta y hace fallar `npm run verify`; con `--pendientes=aviso` solo avisa. |
+| Denylist (lista de nombres prohibidos) | Archivo local `confidencialidad.local.json`, fuera de git, con los nombres que no pueden aparecer en el sitio. `content.test.ts` revisa el código y `verificar-build.mjs` revisa `build/client/`. |
