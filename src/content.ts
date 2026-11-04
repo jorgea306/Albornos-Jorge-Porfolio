@@ -114,6 +114,7 @@ export const content: Contenido = {
   },
   interfaz: {
     cambiarTema: 'Cambiar entre tema claro y oscuro',
+    ejemploIlustrativo: 'Ejemplo ilustrativo',
     pie: '© 2026 Jorge Albornos · Córdoba, Argentina',
   },
   noEncontrado: {

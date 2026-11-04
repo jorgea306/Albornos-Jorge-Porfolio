@@ -65,6 +65,21 @@ export interface Enlace {
   destino: string;
 }
 
+// Cada linea indica su rol con texto (etiqueta), no solo con color. El tipo solo cambia el estilo.
+export interface LineaEjemplo {
+  tipo: 'comando' | 'entrada' | 'evento' | 'salida' | 'ok';
+  etiqueta?: string;
+  texto: string;
+}
+
+// Consola o terminal ficticio. El rotulo "Ejemplo ilustrativo" lo pone el componente (interfaz.ejemploIlustrativo).
+export interface EjemploIlustrativo {
+  titulo: string;
+  lineas: LineaEjemplo[];
+  // Continua el rotulo: se muestra como "Ejemplo ilustrativo <leyenda>".
+  leyenda: string;
+}
+
 export interface TextosHero {
   etiqueta: string;
   titulo: string;
@@ -111,6 +126,7 @@ export interface Inicio {
 
 export interface TextosInterfaz {
   cambiarTema: string;
+  ejemploIlustrativo: string;
   pie: string;
 }
 
