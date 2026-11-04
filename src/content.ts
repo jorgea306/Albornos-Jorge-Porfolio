@@ -35,7 +35,7 @@ export const content: Contenido = {
       etiqueta: 'Desarrollador full stack freelance · Córdoba, Argentina',
       titulo: 'Construyo agentes de IA y automatizaciones que le ahorran horas de trabajo a tu negocio',
       principal: { texto: 'Ver proyectos', destino: `#${ANCLA.casos}` },
-      secundario: { texto: 'Contáctame', destino: `#${ANCLA.contacto}` },
+      secundario: { texto: 'Contame tu problema', destino: `#${ANCLA.contacto}` },
     },
     servicios: {
       id: 'servicios',
