@@ -33,6 +33,7 @@ describe.each(['light', 'dark'] as const)('contraste AA en esquema %s', (esquema
     ['text.secondary sobre fondo', p.text.secondary, p.background.default],
     ['text.secondary sobre paper', p.text.secondary, p.background.paper],
     ['texto del boton sobre el acento salvia', p.primary.contrastText, p.primary.main],
+    ['texto sobre el acento arena', p.secondary.contrastText, p.secondary.main],
   ])('%s >= 4,5:1', (_nombre, texto, fondo) => {
     expect(contraste(texto, fondo)).toBeGreaterThanOrEqual(MINIMO_AA);
   });

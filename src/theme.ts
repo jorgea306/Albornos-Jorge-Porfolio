@@ -1,26 +1,29 @@
 import '@fontsource-variable/inter';
 import { createTheme } from '@mui/material/styles';
 
-// Unico lugar donde se define el acento (verde salvia). Cambiarlo aqui lo cambia en ambos esquemas.
-// El salvia se usa solo en fondos y rellenos: el texto va en text.primary para cumplir contraste AA.
-const SALVIA = { claro: '#8fb396', oscuro: '#a8cdaf' };
-
+// Unico lugar donde se definen los colores. Paleta "Salvia y crema" del diseno de Jorge.
+// El salvia (primary) y la arena (secondary) se usan solo en fondos y rellenos:
+// el texto va en text.primary para cumplir contraste AA.
 export const theme = createTheme({
   // Ambos esquemas viajan como variables CSS en el HTML; InitColorSchemeScript elige la clase antes de pintar.
   cssVariables: { colorSchemeSelector: 'class' },
   colorSchemes: {
     light: {
       palette: {
-        primary: { main: SALVIA.claro, contrastText: '#16241a' },
-        background: { default: '#f6f9f5', paper: '#ffffff' },
-        text: { primary: '#16241a', secondary: '#425547' },
+        primary: { main: '#c6e3cf', contrastText: '#1f2b24' },
+        secondary: { main: '#f3ddb8', contrastText: '#1f2b24' },
+        background: { default: '#f5f2ea', paper: '#ffffff' },
+        text: { primary: '#1f2b24', secondary: '#56635a' },
+        divider: '#e2ddd0',
       },
     },
     dark: {
       palette: {
-        primary: { main: SALVIA.oscuro, contrastText: '#0f1a12' },
-        background: { default: '#131a15', paper: '#1b251e' },
-        text: { primary: '#e9f1ea', secondary: '#b5c5b8' },
+        primary: { main: '#a8d5b8', contrastText: '#131a16' },
+        secondary: { main: '#e8cf9e', contrastText: '#131a16' },
+        background: { default: '#131a16', paper: '#1a231e' },
+        text: { primary: '#eaf0ec', secondary: '#a3b3a8' },
+        divider: '#27342c',
       },
     },
   },
