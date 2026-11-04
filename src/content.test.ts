@@ -95,11 +95,20 @@ describe.skipIf(!existsSync(ARCHIVO_DENYLIST))('confidencialidad', () => {
 // "tu/tus" como posesivo es valido ("a tu negocio"), por eso no figura en la lista.
 const FORMAS_DE_TUTEO = ['Contáctame', 'puedes', 'tienes', 'quieres', 'cuéntame', 'escríbeme', 'para ti'];
 
+// Dentro de un template literal la barra se escribe doble: con `\p` suelto se pierde y queda `p{L}`.
+function marcaForma(frase: string, forma: string): boolean {
+  return new RegExp(`(?<![\\p{L}])${forma}(?![\\p{L}])`, 'iu').test(frase);
+}
+
+function contieneTuteo(frase: string): boolean {
+  return FORMAS_DE_TUTEO.some((forma) => marcaForma(frase, forma));
+}
+
 describe('tono de los textos', () => {
   const texto = JSON.stringify(content);
 
   it.each(FORMAS_DE_TUTEO)('no usa la forma de tuteo "%s"', (forma) => {
-    expect(texto).not.toMatch(new RegExp(`(?<![\p{L}])${forma}(?![\p{L}])`, 'iu'));
+    expect(marcaForma(texto, forma)).toBe(false);
   });
 
   it('el posesivo "a tu negocio" no se marca como tuteo', () => {
@@ -107,8 +116,9 @@ describe('tono de los textos', () => {
     expect(contieneTuteo('le ahorran horas a tu negocio')).toBe(false);
     expect(contieneTuteo('si quieres, escríbeme')).toBe(true);
   });
-});
 
-function contieneTuteo(frase: string): boolean {
-  return FORMAS_DE_TUTEO.some((forma) => new RegExp(`(?<![\p{L}])${forma}(?![\p{L}])`, 'iu').test(frase));
-}
+  it('respeta el límite de palabra (regresión de la barra perdida en \\p{L})', () => {
+    expect(contieneTuteo('el grupuedes raro')).toBe(false);
+    expect(contieneTuteo('lo que {puedes}')).toBe(true);
+  });
+});
