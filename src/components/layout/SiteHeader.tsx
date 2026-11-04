@@ -46,7 +46,7 @@ export default function SiteHeader() {
           to="/"
           aria-label={navegacion.irAlInicio}
           underline="none"
-          sx={{ display: 'inline-flex', alignItems: 'center', gap: 1.5, minHeight: 44, mr: 'auto' }}
+          sx={{ display: 'inline-flex', alignItems: 'center', gap: 1.5, minHeight: 44, minWidth: 44, mr: 'auto' }}
         >
           <Box
             aria-hidden="true"

@@ -30,35 +30,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {/* id="arriba": destino de "Volver arriba", que existe también en las páginas de detalle. */}
-          <Box id="arriba" sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-            {/* Primer foco al presionar Tab: queda fuera de pantalla hasta recibirlo. */}
-            <Link
-              href="#contenido"
-              sx={{
-                position: 'absolute',
-                top: 8,
-                left: 8,
-                zIndex: 'tooltip',
-                px: 2,
-                py: 1.5,
-                borderRadius: 1,
-                bgcolor: 'background.paper',
-                border: 1,
-                borderColor: 'divider',
-                transform: 'translateY(-200%)',
-                '&:focus-visible': { transform: 'none' },
-              }}
-            >
-              {navegacion.saltarAlContenido}
-            </Link>
-            <SiteHeader />
-            {/* tabIndex -1: el enlace "Saltar al contenido" puede dejar el foco aquí sin sumar una parada de Tab. */}
-            <Box component="main" id="contenido" tabIndex={-1} sx={{ flex: 1, '&&:focus-visible': { outline: 'none' } }}>
-              {children}
-            </Box>
-            <SiteFooter />
-          </Box>
+          {children}
         </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
@@ -67,6 +39,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// La barra y el pie viven aquí y no en Layout: Layout también arma el HTML de respaldo (__spa-fallback.html),
+// que se genera en "/" y daría una barra distinta a la de /cualquier-cosa (error de hidratación de React).
 export default function App() {
-  return <Outlet />;
+  // id="arriba": destino de "Volver arriba", que existe también en las páginas de detalle.
+  return (
+      <Box id="arriba" sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        {/* Primer foco al presionar Tab: queda fuera de pantalla hasta recibirlo. */}
+        <Link
+          href="#contenido"
+          sx={{
+            position: 'absolute',
+            top: 8,
+            left: 8,
+            zIndex: 'tooltip',
+            px: 2,
+            py: 1.5,
+            borderRadius: 1,
+            bgcolor: 'background.paper',
+            border: 1,
+            borderColor: 'divider',
+            transform: 'translateY(-200%)',
+            '&:focus-visible': { transform: 'none' },
+          }}
+        >
+          {navegacion.saltarAlContenido}
+        </Link>
+        <SiteHeader />
+        {/* tabIndex -1: el enlace "Saltar al contenido" puede dejar el foco aquí sin sumar una parada de Tab. */}
+        <Box component="main" id="contenido" tabIndex={-1} sx={{ flex: 1, '&&:focus-visible': { outline: 'none' } }}>
+          <Outlet />
+        </Box>
+        <SiteFooter />
+      </Box>
+  );
 }
