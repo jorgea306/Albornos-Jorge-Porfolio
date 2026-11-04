@@ -22,3 +22,10 @@ Términos técnicos que aparecen en los artefactos del portfolio, explicados con
 | Carga diferida | Pedir un archivo recién cuando hace falta. Ejemplo: los videos de `/casos/dallas-note` usan `preload="none"` y solo muestran su póster hasta que el usuario toca reproducir. |
 | Vitest y Testing Library | Herramientas de pruebas automáticas: Vitest ejecuta las pruebas y Testing Library renderiza componentes como los usa una persona. Ejemplo: probar que `CaseDetail` no muestra diagrama en un caso "En desarrollo". |
 | Placeholder `[COMPLETAR]` | Marca en `src/content.ts` o imagen provisoria que indica un dato o captura que Jorge todavía tiene que cargar. |
+| Contraste AA | Nivel mínimo de las pautas de accesibilidad WCAG: el texto normal necesita una relación de 4,5:1 con su fondo. `src/theme.test.ts` lo mide para cada par de colores, como el botón principal sobre la crema. |
+| Fuente variable | Un solo archivo de fuente que contiene todos los pesos. Ejemplo: `@fontsource-variable/inter` sirve los pesos 400, 500 y 600 de Inter con una sola descarga. |
+| Barra fija (sticky) | Encabezado que se queda pegado arriba al hacer scroll. En el portfolio es `SiteHeader`; por eso `scroll-padding-top` compensa su altura al saltar a `#casos`. |
+| Ancla | Parte de la dirección que empieza con `#` y lleva a una sección de la página. Ejemplo: `/#contacto` abre el Inicio en el bloque de Contacto. |
+| `prefers-reduced-motion` | Preferencia del sistema operativo para pedir menos animaciones. Si está activa, la consola del Hero muestra todas sus líneas de entrada, sin aparecer de a una. |
+| IntersectionObserver | API del navegador que avisa cuándo un elemento entra en pantalla. El índice "En este caso" la usa para resaltar el artículo que se está leyendo. |
+| Module augmentation (ampliación de tipos) | Técnica de TypeScript para sumar claves a los tipos de una librería, como una clave de paleta propia en MUI. El diseño la evita reusando claves existentes. |
