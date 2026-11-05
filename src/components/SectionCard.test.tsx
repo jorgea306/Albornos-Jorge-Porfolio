@@ -26,6 +26,30 @@ describe('SectionCard', () => {
     expect(screen.getByText('Etiqueta de prueba')).toBeInTheDocument();
   });
 
+  describe('medio', () => {
+    const medio = { src: '/casos/ejemplo/tarjeta.webp', alt: 'Captura de ejemplo', ancho: 800, alto: 450, textoPendiente: 'Falta la captura' };
+
+    it('con el archivo disponible muestra la imagen con ancho y alto declarados', () => {
+      const { container } = mostrarConTema(<SectionCard {...base} medio={{ ...medio, pendiente: false }} />);
+      const imagen = screen.getByRole('img', { name: medio.alt });
+      expect(imagen).toHaveAttribute('src', medio.src);
+      expect(imagen).toHaveAttribute('width', '800');
+      expect(imagen).toHaveAttribute('height', '450');
+      expect(container).not.toHaveTextContent(medio.textoPendiente);
+    });
+
+    it('con el archivo pendiente muestra un recuadro rotulado y ninguna imagen rota', () => {
+      const { container } = mostrarConTema(<SectionCard {...base} medio={{ ...medio, pendiente: true }} />);
+      expect(screen.getByText(medio.textoPendiente)).toBeInTheDocument();
+      expect(container.querySelector('img')).toBeNull();
+    });
+
+    it('sin medio no reserva espacio de imagen', () => {
+      const { container } = mostrarConTema(<SectionCard {...base} />);
+      expect(container.querySelector('img')).toBeNull();
+    });
+  });
+
   it('muestra el ícono y las etiquetas cuando se indican', () => {
     mostrarConTema(<SectionCard {...base} icono={<svg aria-hidden="true" data-testid="icono" />} etiquetas={['Uno', 'Dos']} />);
     expect(screen.getByTestId('icono')).toHaveAttribute('aria-hidden', 'true');
