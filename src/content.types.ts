@@ -28,6 +28,14 @@ export interface Caso {
   resumen: string;
   estado: 'publicado' | 'en-desarrollo';
   variante: 'completa' | 'corta';
+  // Etiquetas cortas de la tarjeta del Inicio (tecnologías o rubro).
+  chips?: string[];
+  // Solo el caso destacado del Inicio: los tres bloques PROBLEMA / SOLUCIÓN / RESULTADO.
+  destacado?: { problema: string; solucion: string; resultado: string };
+  // Solo el caso destacado: texto del panel de progreso (accesible) y avance de la barra decorativa, de 0 a 100.
+  progreso?: { texto: string; valor: number };
+  // Espacio de imagen de la tarjeta del Inicio; `pendiente` mientras falte el archivo.
+  imagenTarjeta?: Medio;
   problema: string;
   tecnologias: string[];
   arquitectura?: {
@@ -125,10 +133,17 @@ export interface TextosServicios {
 
 export interface TextosCasos {
   id: string;
-  titulo: string;
-  introduccion: string;
-  enDesarrollo: string;
+  encabezado: Encabezado;
+  // Chip del caso destacado.
+  destacado: string;
+  rotulos: { problema: string; solucion: string; resultado: string };
+  leerCompleto: string;
+  // Texto de cierre de las tarjetas con enlace.
   verCaso: string;
+  // Rótulo del recuadro que ocupa el lugar de una captura que todavía no existe.
+  imagenPendiente: string;
+  // Bloque de los casos en desarrollo: se muestran como enlaces, no como tarjetas.
+  laboratorio: { titulo: string; etiqueta: string };
 }
 
 export interface GrupoStack {
