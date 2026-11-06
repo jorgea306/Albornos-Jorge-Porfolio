@@ -274,6 +274,49 @@ export const content: Contenido = {
         resultado: '652 productos en 6,5 minutos',
       },
       progreso: { texto: 'planilla.xlsx · 2 columnas → 652 / 652 productos · 6,5 min', valor: 100 },
+      // Textos del detalle redactados como borrador (PROVISORIOS): Jorge confirma rol, duración, estado y redacción.
+      tituloLargo: 'De una planilla de dos columnas a una tienda online completa en minutos',
+      bajada:
+        'Un script de Node.js convierte una planilla de dos columnas en el catálogo completo de una tienda online: 652 productos en 6,5 minutos.',
+      metadatos: { rol: COMPLETAR, stack: ['Node.js'], duracion: COMPLETAR, estado: COMPLETAR },
+      problema:
+        'Una tienda online necesitaba publicar su catálogo de 652 productos. Cargarlos uno por uno desde el panel de la tienda llevaría unas 43 horas (estimado: 4 minutos por producto) y cualquier error de tipeo habría que corregirlo a mano.',
+      solucion: [
+        'La entrada es una planilla de solo dos columnas, para que preparar el catálogo no exija conocer el formato interno de la tienda.',
+        'Un único script de Node.js hace todo el recorrido, de la planilla a la tienda publicada, sin pasos manuales en el medio.',
+        'El script muestra su avance y cuántos productos cargó (652 de 652), así se comprueba de un vistazo que no quedó ninguno afuera.',
+      ],
+      terminal: {
+        titulo: 'terminal · carga de productos',
+        leyenda: 'de una carga masiva con un script',
+        lineas: [
+          { tipo: 'comando', texto: 'node cargar-productos.js planilla.xlsx' },
+          { tipo: 'salida', etiqueta: 'lectura', texto: 'planilla.xlsx · 2 columnas · 652 filas' },
+          { tipo: 'ok', etiqueta: 'resultado', texto: '652 / 652 productos cargados · 6m 30s' },
+        ],
+      },
+      arquitectura: {
+        diagrama: 'carga-masiva',
+        descripcion: 'Flujo de la carga masiva, de izquierda a derecha: Planilla, Script, Tienda online.',
+        etiquetas: {
+          planilla: 'Planilla',
+          planillaDetalle: '2 columnas',
+          script: 'Script',
+          scriptDetalle: 'Node.js',
+          tienda: 'Tienda online',
+          tiendaDetalle: 'Productos publicados',
+        },
+      },
+      resultados: [
+        { valor: '652', etiqueta: 'productos cargados', tipo: 'medido' },
+        { valor: '6,5 min', etiqueta: 'de punta a punta', tipo: 'medido' },
+        { valor: '2.608 min', etiqueta: 'estimado a mano: 652 productos × 4 min', tipo: 'estimado' },
+        { valor: '2', etiqueta: 'columnas de entrada', tipo: 'medido' },
+      ],
+      aprendizajes: [
+        'Estimar el tiempo de la carga manual antes de automatizar da un punto de comparación; por eso las 43,5 horas figuran como estimado.',
+        'Pedir lo mínimo como entrada (dos columnas) vuelve el script más fácil de usar y de volver a ejecutar cuando cambia el catálogo.',
+      ],
     }),
     casoBase({
       slug: 'dallas-note',
