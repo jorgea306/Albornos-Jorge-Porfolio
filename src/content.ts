@@ -24,13 +24,23 @@ function imagenTarjeta(alt: string): Medio {
 // Los textos largos de cada caso se completan en los slices 7 y 8; aqui la identidad, el estado y lo que muestra el Inicio.
 function casoBase(
   datos: Pick<Caso, 'slug' | 'titulo' | 'resumen' | 'estado' | 'variante'> &
-    Partial<Pick<Caso, 'chips' | 'destacado' | 'progreso' | 'imagenTarjeta'>>,
+    Partial<Omit<Caso, 'slug' | 'titulo' | 'resumen' | 'estado' | 'variante' | 'seo' | 'medios'>>,
 ): Caso {
+  // Valores por defecto: lo que no se pasa queda como pendiente. Los datos recibidos pisan estos valores.
   return {
-    ...datos,
+    tituloLargo: datos.titulo,
+    bajada: datos.resumen,
+    metadatos: {
+      rol: COMPLETAR,
+      stack: [],
+      duracion: COMPLETAR,
+      estado: datos.estado === 'en-desarrollo' ? 'En desarrollo' : COMPLETAR,
+    },
     problema: COMPLETAR,
-    tecnologias: [],
+    solucion: [],
+    aprendizajes: [],
     medios: [],
+    ...datos,
     seo: { titulo: datos.titulo, descripcion: datos.resumen, ogImagen: OG_GENERAL },
   };
 }
@@ -232,6 +242,18 @@ export const content: Contenido = {
     descripcion: 'La dirección que abriste no existe o cambió de lugar.',
     enlace: 'Ir al inicio',
     seoTitulo: 'Página no encontrada | Jorge Albornos',
+  },
+  detalle: {
+    metadatos: { rol: 'Rol', stack: 'Stack', duracion: 'Duración', estado: 'Estado' },
+    resultados: 'Resultados',
+    secciones: {
+      problema: { id: 'el-problema', titulo: 'El problema' },
+      solucion: { id: 'la-solucion', titulo: 'La solución' },
+      funciona: { id: 'como-funciona', titulo: 'Cómo funciona' },
+      aprendizajes: { id: 'aprendizajes', titulo: 'Aprendizajes' },
+    },
+    decisiones: 'Decisiones',
+    cta: { pregunta: '¿Tenés un problema parecido?', accion: 'Hablemos →' },
   },
   // El orden de este arreglo es el orden de las tarjetas del Inicio y de "Siguiente caso":
   // Caso A (destacado), Dallas Note, Plataforma de agentes y API de usuarios; los "en desarrollo" al final (Laboratorio).
