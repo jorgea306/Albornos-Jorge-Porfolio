@@ -76,6 +76,27 @@ describe('content.ts', () => {
     }
   });
 
+  it('foto y CV: pendiente es false solo si el archivo existe en public/ (los dos sentidos)', () => {
+    const { foto, cv } = content.inicio.sobreMi;
+    for (const { archivo, pendiente } of [foto, cv]) {
+      const existe = existsSync(join(RAIZ, 'public', archivo));
+      expect(pendiente, archivo).toBe(!existe);
+    }
+  });
+
+  it('los datos sin confirmar siguen marcados con COMPLETAR (4+ años, título técnico, LinkedIn)', () => {
+    const { destacados, sobreMi } = content.inicio;
+    expect(destacados.items.find((d) => d.valor.startsWith('4+ años'))?.valor).toContain(COMPLETAR);
+    expect(sobreMi.subtitulo).toContain(COMPLETAR);
+    expect(content.redes.linkedin.url).toBe(COMPLETAR);
+  });
+
+  it('la bio tiene dos párrafos y nombra a Extrados', () => {
+    const { parrafos } = content.inicio.sobreMi;
+    expect(parrafos).toHaveLength(2);
+    expect(parrafos.join(' ')).toContain('Extrados');
+  });
+
   it('exporta el marcador COMPLETAR', () => {
     expect(COMPLETAR).toBe('[COMPLETAR]');
   });
