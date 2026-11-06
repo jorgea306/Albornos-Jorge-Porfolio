@@ -1,8 +1,9 @@
+import About from '../components/sections/About';
 import Cases from '../components/sections/Cases';
 import Hero from '../components/sections/Hero';
 import Highlights from '../components/sections/Highlights';
+import Process from '../components/sections/Process';
 import Services from '../components/sections/Services';
-import StackCard from '../components/sections/StackCard';
 import { content } from '../content';
 import { metaPagina } from '../lib/meta';
 
@@ -14,7 +15,7 @@ export function meta() {
   });
 }
 
-// Transitorio: la tarjeta de Stack queda suelta hasta que Sobre mí la incluya (siguiente commit).
+// Falta Contacto: llega en el siguiente commit, que fija el orden final.
 export default function Home() {
   return (
     <>
@@ -22,7 +23,8 @@ export default function Home() {
       <Highlights />
       <Services />
       <Cases />
-      <StackCard />
+      <Process />
+      <About />
     </>
   );
 }
