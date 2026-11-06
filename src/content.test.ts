@@ -88,6 +88,7 @@ describe('content.ts', () => {
     const { destacados, sobreMi } = content.inicio;
     expect(destacados.items.find((d) => d.valor.startsWith('4+ años'))?.valor).toContain(COMPLETAR);
     expect(sobreMi.subtitulo).toContain(COMPLETAR);
+    expect(sobreMi.parrafos[0]).toContain(COMPLETAR);
     expect(content.redes.linkedin.url).toBe(COMPLETAR);
   });
 

@@ -177,13 +177,13 @@ export const content: Contenido = {
         },
       ],
     },
-    // Textos de la bio provisorios: Jorge debe confirmarlos. El título técnico y los archivos de foto y CV siguen pendientes.
+    // Textos de la bio provisorios: Jorge debe confirmarlos. El primer párrafo lleva COMPLETAR hasta que lo apruebe, así npm run verify bloquea la publicación. El título técnico y los archivos de foto y CV siguen pendientes.
     sobreMi: {
       id: ANCLA.sobreMi,
       encabezado: { etiqueta: '04 / SOBRE MÍ', titulo: 'Jorge Albornos' },
       subtitulo: `Técnico Superior en Desarrollo de Software ${COMPLETAR}`,
       parrafos: [
-        'Soy desarrollador full stack y trabajo desde Córdoba, Argentina. En Extrados desarrollo software en producción, con foco en APIs de backend y en interfaces con React.',
+        `Soy desarrollador full stack y trabajo desde Córdoba, Argentina. En Extrados desarrollo software en producción, con foco en APIs de backend y en interfaces con React. ${COMPLETAR}`,
         'Hoy me dedico sobre todo a agentes de IA que usan herramientas y dejan registro de cada acción, y a automatizar tareas repetitivas para que un equipo recupere horas de trabajo.',
       ],
       foto: {
