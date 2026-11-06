@@ -2,7 +2,7 @@ import Cases from '../components/sections/Cases';
 import Hero from '../components/sections/Hero';
 import Highlights from '../components/sections/Highlights';
 import Services from '../components/sections/Services';
-import Stack from '../components/sections/Stack';
+import StackCard from '../components/sections/StackCard';
 import { content } from '../content';
 import { metaPagina } from '../lib/meta';
 
@@ -14,7 +14,7 @@ export function meta() {
   });
 }
 
-// Faltan Proceso, Sobre mí y Contacto: llegan en el slice 6, que fija el orden final.
+// Transitorio: la tarjeta de Stack queda suelta hasta que Sobre mí la incluya (siguiente commit).
 export default function Home() {
   return (
     <>
@@ -22,7 +22,7 @@ export default function Home() {
       <Highlights />
       <Services />
       <Cases />
-      <Stack />
+      <StackCard />
     </>
   );
 }

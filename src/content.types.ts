@@ -151,10 +151,54 @@ export interface GrupoStack {
   tecnologias: string[];
 }
 
+// El Stack ya no es una sección: vive dentro de Sobre mí, así que no tiene ancla ni h2 propio.
 export interface TextosStack {
-  id: string;
   titulo: string;
   grupos: GrupoStack[];
+}
+
+export interface PasoProceso {
+  titulo: string;
+  descripcion: string;
+}
+
+// El número de cada paso sale de su posición en `pasos`; no se guarda.
+export interface TextosProceso {
+  id: string;
+  encabezado: Encabezado;
+  pasos: PasoProceso[];
+}
+
+// Archivo descargable (CV). Se ofrece solo si `pendiente` es false, o sea, si el archivo ya está en public/.
+export interface Descarga {
+  // Nombre del archivo dentro de public/.
+  archivo: string;
+  texto: string;
+  pendiente: boolean;
+}
+
+export interface TextosSobreMi {
+  id: string;
+  encabezado: { etiqueta: string; titulo: string };
+  // Título técnico: queda como COMPLETAR hasta que Jorge lo confirme.
+  subtitulo: string;
+  parrafos: string[];
+  // Foto de perfil: `archivo` es el nombre dentro de public/. Con `pendiente` en true se muestra el avatar con iniciales.
+  foto: Medio;
+  cv: Descarga;
+}
+
+export interface TextosContacto {
+  id: string;
+  // Pregunta del bloque (h2) y frase que la acompaña.
+  titulo: string;
+  bajada: string;
+  telefono: EnlaceExterno;
+  whatsapp: EnlaceExterno;
+  email: string;
+  copiar: string;
+  copiado: string;
+  copiarFallo: string;
 }
 
 export interface Inicio {
@@ -162,7 +206,10 @@ export interface Inicio {
   destacados: TextosDestacados;
   servicios: TextosServicios;
   casos: TextosCasos;
+  proceso: TextosProceso;
+  sobreMi: TextosSobreMi;
   stack: TextosStack;
+  contacto: TextosContacto;
 }
 
 export interface TextosInterfaz {

@@ -4,7 +4,7 @@ import { content } from '../../content';
 import { mostrarConTema } from '../../test/render';
 import Hero from './Hero';
 import Services from './Services';
-import Stack from './Stack';
+import StackCard from './StackCard';
 
 const { hero, servicios, stack } = content.inicio;
 
@@ -46,12 +46,18 @@ describe('Services', () => {
   });
 });
 
-describe('Stack', () => {
-  it('muestra cada grupo con sus tecnologias', () => {
-    mostrarConTema(<Stack />);
-    for (const grupo of stack.grupos) {
-      expect(screen.getByRole('heading', { level: 3, name: grupo.titulo })).toBeInTheDocument();
-    }
+describe('StackCard', () => {
+  it('muestra 5 filas en el orden Backend, IA, Frontend, Datos y Cloud, con sus tecnologías', () => {
+    const { container } = mostrarConTema(<StackCard />);
+    const filas = [...container.querySelectorAll('dt')].map((dt) => dt.textContent);
+    expect(filas).toEqual(['Backend', 'IA', 'Frontend', 'Datos', 'Cloud']);
+    expect(filas).toEqual(stack.grupos.map((g) => g.titulo));
     expect(screen.getAllByRole('listitem')).toHaveLength(stack.grupos.flatMap((g) => g.tecnologias).length);
+  });
+
+  it('no abre una sección ni un h2: su título es un h3', () => {
+    mostrarConTema(<StackCard />);
+    expect(screen.queryByRole('heading', { level: 2 })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: stack.titulo })).toBeInTheDocument();
   });
 });
