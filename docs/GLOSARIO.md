@@ -32,3 +32,6 @@ Términos técnicos que aparecen en los artefactos del portfolio, explicados con
 | `figure` y `figcaption` | Etiquetas HTML para un bloque con su leyenda. `IllustrativeExample` las usa para que el lector de pantalla anuncie la consola del Hero junto con el rótulo "Ejemplo ilustrativo". |
 | Pendiente visible | Un `[COMPLETAR]` que se ve en pantalla, en un atributo como `href` o en el `<head>`. `scripts/verificar-build.mjs` lo detecta y hace fallar `npm run verify`; con `--pendientes=aviso` solo avisa. |
 | Denylist (lista de nombres prohibidos) | Archivo local `confidencialidad.local.json`, fuera de git, con los nombres que no pueden aparecer en el sitio. `content.test.ts` revisa el código y `verificar-build.mjs` revisa `build/client/`. |
+| Portapapeles del navegador (Clipboard API) | Interfaz que permite a una página copiar texto. `Contact.tsx` llama a `navigator.clipboard.writeText` con el email; si el navegador la bloquea o no la tiene, muestra un aviso y el email sigue visible. |
+| Región `aria-live` | Zona de la página cuyo texto, al cambiar, el lector de pantalla lee en voz alta sin mover el foco. En `Contact.tsx` anuncia "Email copiado". |
+| Botón invertido | Botón que usa los colores del bloque al revés (fondo = color del texto, letra = color del fondo). El bloque Contacto lo usa porque el botón principal salvia se perdería sobre el fondo salvia. |
