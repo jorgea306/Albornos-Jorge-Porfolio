@@ -1,9 +1,9 @@
-import { screen, within } from '@testing-library/react';
+import { cleanup, screen, within } from '@testing-library/react';
 import type { ComponentProps } from 'react';
 import { describe, expect, it } from 'vitest';
-import { content } from '../content';
+import { content, getCaseBySlug } from '../content';
 import { mostrarConTema } from '../test/render';
-import CaseDetail from './CaseDetail';
+import CaseDetail, { meta } from './CaseDetail';
 
 const { secciones } = content.detalle;
 const casoA = content.casos[0];
@@ -128,5 +128,77 @@ describe('CaseDetail: variante corta y slug desconocido', () => {
     mostrarCaso('no-existe');
     expect(screen.getByRole('heading', { level: 1, name: content.noEncontrado.titulo })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: content.noEncontrado.enlace })).toHaveAttribute('href', '/');
+  });
+});
+
+describe('CaseDetail: los 4 casos completos y los 2 cortos', () => {
+  const completos = content.casos.filter((c) => c.variante === 'completa');
+  const cortos = content.casos.filter((c) => c.variante === 'corta');
+
+  it.each(completos.map((c) => c.slug))('%s muestra su diagrama dentro de "Cómo funciona", con nombre accesible', (slug) => {
+    const caso = getCaseBySlug(slug)!;
+    const { container } = mostrarCaso(slug);
+    const articulo = container.querySelector<HTMLElement>(`#${secciones.funciona.id}`)!;
+    const diagrama = articulo.querySelector<HTMLElement>(`[data-diagrama="${caso.arquitectura!.diagrama}"]`)!;
+    expect(diagrama).not.toBeNull();
+    expect(diagrama.querySelector('svg')).not.toBeNull();
+    expect(diagrama).toHaveAccessibleName(caso.arquitectura!.descripcion);
+    expect(within(container.querySelector<HTMLElement>(`#${secciones.aprendizajes.id}`)!).getAllByRole('listitem').length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('la Plataforma no muestra la fila de tarjetas de resultado; Dallas Note y la API sí', () => {
+    mostrarCaso('plataforma-agentes-ia');
+    expect(screen.queryByRole('list', { name: content.detalle.resultados })).toBeNull();
+    cleanup();
+    mostrarCaso('dallas-note');
+    expect(within(screen.getByRole('list', { name: content.detalle.resultados })).getAllByRole('listitem')).toHaveLength(3);
+    cleanup();
+    mostrarCaso('api-usuarios-nestjs');
+    expect(within(screen.getByRole('list', { name: content.detalle.resultados })).getAllByRole('listitem')).toHaveLength(1);
+  });
+
+  it('Siguiente caso recorre A → Dallas → Plataforma → API → A', () => {
+    for (const [i, caso] of completos.entries()) {
+      mostrarCaso(caso.slug);
+      const destino = completos[(i + 1) % completos.length].slug;
+      expect(screen.getByRole('link', { name: new RegExp(content.detalle.siguiente) })).toHaveAttribute('href', `/casos/${destino}`);
+      cleanup();
+    }
+  });
+
+  it.each(cortos.map((c) => c.slug))('%s no tiene índice, diagrama, aprendizajes ni Siguiente caso, y sí la tarjeta "Hablemos"', (slug) => {
+    const { container } = mostrarCaso(slug);
+    expect(container.querySelector('[data-diagrama]')).toBeNull();
+    expect(screen.queryByRole('navigation', { name: content.detalle.indice })).toBeNull();
+    expect(screen.queryByRole('heading', { level: 2, name: secciones.aprendizajes.titulo })).toBeNull();
+    expect(screen.queryByText(content.detalle.siguiente)).toBeNull();
+    expect(screen.getByRole('link', { name: content.detalle.cta.accion })).toHaveAttribute('href', '/#contacto');
+  });
+
+  it('la barra de migas es igual en un caso corto y en uno completo', () => {
+    const forma = (slug: string) => {
+      mostrarCaso(slug);
+      const migas = screen.getByRole('navigation', { name: content.navegacion.migas.etiqueta });
+      const resultado = [within(migas).getByRole('link').getAttribute('href'), within(migas).getByText(getCaseBySlug(slug)!.titulo).getAttribute('aria-current')];
+      cleanup();
+      return resultado;
+    };
+    expect(forma(cortos[0].slug)).toEqual(forma(completos[0].slug));
+  });
+
+  it('los 6 casos tienen h1 y título de la pestaña distintos', () => {
+    const h1 = content.casos.map((caso) => {
+      mostrarCaso(caso.slug);
+      const texto = screen.getByRole('heading', { level: 1 }).textContent;
+      cleanup();
+      return texto;
+    });
+    expect(new Set(h1).size).toBe(6);
+    const titulos = content.casos.map((caso) => {
+      const entradas = meta({ params: { slug: caso.slug } } as never) as { title?: string }[];
+      return entradas.find((entrada) => entrada.title)?.title;
+    });
+    expect(titulos.every(Boolean)).toBe(true);
+    expect(new Set(titulos).size).toBe(6);
   });
 });

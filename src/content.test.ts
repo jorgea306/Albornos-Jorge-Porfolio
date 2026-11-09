@@ -53,11 +53,11 @@ describe('content.ts', () => {
     expect(casoA.progreso?.texto).toBe('planilla.xlsx · 2 columnas → 652 / 652 productos · 6,5 min');
   });
 
-  it('el Caso A tiene título largo, 4 métricas con la estimada explicada, terminal y diagrama de 3 cajas', () => {
+  it('el Caso A tiene título largo, 4 métricas con la estimada explicada (43,5 h), terminal y diagrama de 3 cajas', () => {
     const casoA = getCaseBySlug('carga-masiva-productos')!;
     expect(casoA.tituloLargo).toBe('De una planilla de dos columnas a una tienda online completa en minutos');
     expect(casoA.tituloLargo).not.toBe(casoA.titulo);
-    expect(casoA.resultados?.map((m) => m.valor)).toEqual(['652', '6,5 min', '2.608 min', '2']);
+    expect(casoA.resultados?.map((m) => m.valor)).toEqual(['652', '6,5 min', '43,5 h', '2']);
     const estimadas = casoA.resultados!.filter((m) => m.tipo === 'estimado');
     expect(estimadas).toHaveLength(1);
     expect(estimadas[0].etiqueta).toContain('652 productos × 4 min');
@@ -68,9 +68,9 @@ describe('content.ts', () => {
     expect(casoA.solucion.length).toBeGreaterThan(0);
   });
 
-  it('los metadatos desconocidos del Caso A llevan COMPLETAR y el Estado de los casos en desarrollo está escrito', () => {
+  it('el Caso A tiene Rol y Estado escritos y la Duración pendiente; el Estado de los casos en desarrollo está escrito', () => {
     const { metadatos } = getCaseBySlug('carga-masiva-productos')!;
-    expect([metadatos.rol, metadatos.duracion, metadatos.estado]).toEqual([COMPLETAR, COMPLETAR, COMPLETAR]);
+    expect([metadatos.rol, metadatos.duracion, metadatos.estado]).toEqual(['Desarrollo completo', COMPLETAR, 'En uso']);
     for (const caso of content.casos.filter((c) => c.estado === 'en-desarrollo')) {
       expect(caso.metadatos.estado, caso.slug).toBe('En desarrollo');
     }
@@ -201,7 +201,72 @@ describe('tono de los textos', () => {
   });
 });
 
+const COMPLETOS = ['carga-masiva-productos', 'dallas-note', 'plataforma-agentes-ia', 'api-usuarios-nestjs'];
+
+describe('casos completos y cortos', () => {
+  const completos = content.casos.filter((c) => c.variante === 'completa');
+  const cortos = content.casos.filter((c) => c.variante === 'corta');
+
+  it('los 4 casos completos son los esperados', () => {
+    expect(completos.map((c) => c.slug)).toEqual(COMPLETOS);
+  });
+
+  it.each(COMPLETOS)('%s tiene arquitectura, al menos 2 aprendizajes y los 4 metadatos', (slug) => {
+    const caso = getCaseBySlug(slug)!;
+    expect(caso.arquitectura, slug).toBeDefined();
+    expect(caso.aprendizajes.length, slug).toBeGreaterThanOrEqual(2);
+    const { rol, stack, duracion, estado } = caso.metadatos;
+    expect([rol, duracion, estado].every((dato) => dato.trim() !== ''), slug).toBe(true);
+    expect(stack.length, slug).toBeGreaterThan(0);
+    expect(caso.solucion.length, slug).toBeGreaterThan(0);
+  });
+
+  it('cada caso completo apunta a un diagrama distinto', () => {
+    const ids = completos.map((c) => c.arquitectura!.diagrama);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('todo caso completo con resultados trae al menos una cifra numérica o COMPLETAR', () => {
+    for (const caso of completos.filter((c) => c.resultados)) {
+      const hayCifra = caso.resultados!.some((m) => /\d/.test(m.valor) || m.valor.includes(COMPLETAR));
+      expect(hayCifra, caso.slug).toBe(true);
+    }
+  });
+
+  it('Dallas Note trae 3 métricas y la API de usuarios una métrica pendiente', () => {
+    expect(getCaseBySlug('dallas-note')!.resultados!.map((m) => m.valor)).toEqual(['2', '2', 'USD 0']);
+    expect(getCaseBySlug('api-usuarios-nestjs')!.resultados!.map((m) => m.valor)).toEqual([COMPLETAR]);
+  });
+
+  it('la Plataforma no trae resultados y no incluye la nota privada de Jorge', () => {
+    const plataforma = getCaseBySlug('plataforma-agentes-ia')!;
+    expect(plataforma.resultados).toBeUndefined();
+    expect(JSON.stringify(plataforma)).not.toMatch(/Nota de Jorge|empleador/i);
+  });
+
+  it('las afirmaciones sin confirmar de los casos llevan COMPLETAR', () => {
+    const dallas = getCaseBySlug('dallas-note')!;
+    expect(dallas.aprendizajes[0]).toContain(COMPLETAR);
+    const plataforma = getCaseBySlug('plataforma-agentes-ia')!;
+    expect(plataforma.solucion.find((d) => d.includes('JWT'))).toContain(COMPLETAR);
+    expect(plataforma.metadatos.duracion).toContain('Global');
+  });
+
+  it('los casos cortos no tienen arquitectura, aprendizajes ni resultados', () => {
+    expect(cortos).toHaveLength(2);
+    for (const caso of cortos) {
+      expect([caso.arquitectura, caso.resultados, caso.aprendizajes], caso.slug).toEqual([undefined, undefined, []]);
+    }
+  });
+});
+
 describe('getSiguienteCaso', () => {
+  it('recorre el ciclo completo A → Dallas → Plataforma → API → A', () => {
+    const recorrido = [COMPLETOS[0]];
+    for (let i = 0; i < COMPLETOS.length; i++) recorrido.push(getSiguienteCaso(recorrido.at(-1))!.slug);
+    expect(recorrido).toEqual([...COMPLETOS, COMPLETOS[0]]);
+  });
+
   it('sigue el orden de content.casos entre los casos completos', () => {
     expect(getSiguienteCaso('carga-masiva-productos')?.slug).toBe('dallas-note');
     expect(getSiguienteCaso('dallas-note')?.slug).toBe('plataforma-agentes-ia');
