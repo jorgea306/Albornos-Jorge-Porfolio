@@ -57,8 +57,8 @@ export default function CaseDetail({ params }: Route.ComponentProps) {
               {decisiones}
             </Typography>
             <Box component="ul" sx={{ m: 0, mb: 3, pl: 3, maxWidth: '65ch' }}>
-              {caso.solucion.map((decision) => (
-                <li key={decision}>{decision}</li>
+              {caso.solucion.map((decision, indice) => (
+                <li key={indice}>{decision}</li>
               ))}
             </Box>
             {caso.terminal && <IllustrativeExample ejemplo={caso.terminal} />}
@@ -76,8 +76,9 @@ export default function CaseDetail({ params }: Route.ComponentProps) {
         seccion: secciones.aprendizajes,
         cuerpo: (
           <Box component="ul" sx={{ m: 0, pl: 3, maxWidth: '65ch' }}>
-            {caso.aprendizajes.map((aprendizaje) => (
-              <li key={aprendizaje}>{aprendizaje}</li>
+            {/* La clave es la posición: dos aprendizajes pendientes llevan el mismo texto (COMPLETAR). */}
+            {caso.aprendizajes.map((aprendizaje, indice) => (
+              <li key={indice}>{aprendizaje}</li>
             ))}
           </Box>
         ),
