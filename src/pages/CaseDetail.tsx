@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import CaseHeader from '../components/case/CaseHeader';
 import CaseSection from '../components/case/CaseSection';
 import CaseToc from '../components/case/CaseToc';
+import NextCase from '../components/case/NextCase';
 import IllustrativeExample from '../components/IllustrativeExample';
 import { content, getCaseBySlug } from '../content';
 import type { SeccionDetalle } from '../content.types';
@@ -31,7 +32,7 @@ export function meta({ params }: Route.MetaArgs) {
 }
 
 // Plantilla de detalle. El caso completo muestra los artículos 01 a 04 junto al índice lateral (dos columnas desde `md`); el corto, solo el problema.
-// Las tarjetas de resultado y la tarjeta final de contacto no están dibujadas todavía.
+// Al final del caso completo va "Siguiente caso". Las tarjetas de resultado y la tarjeta final de contacto no están dibujadas todavía.
 // Una sección sin datos no se dibuja.
 // `data-variante` deja en el HTML qué plantilla se usó, para que el build pueda verificarla.
 export default function CaseDetail({ params }: Route.ComponentProps) {
@@ -92,7 +93,10 @@ export default function CaseDetail({ params }: Route.ComponentProps) {
         // El índice va primero en el HTML: en pantallas chicas queda arriba y desde `md` pasa a la columna izquierda.
         <Box sx={{ display: 'grid', gap: { xs: 3, md: 6 }, gridTemplateColumns: { md: '220px minmax(0, 1fr)' }, alignItems: 'start' }}>
           <CaseToc secciones={articulos.map((a) => a.seccion)} />
-          <Box sx={{ maxWidth: 760 }}>{articulosDibujados}</Box>
+          <Box sx={{ maxWidth: 760 }}>
+            {articulosDibujados}
+            <NextCase caso={caso} />
+          </Box>
         </Box>
       ) : (
         <Box sx={{ maxWidth: 760 }}>{articulosDibujados}</Box>

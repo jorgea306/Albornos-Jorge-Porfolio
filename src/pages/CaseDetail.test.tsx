@@ -44,6 +44,14 @@ describe('CaseDetail: Caso A (plantilla completa)', () => {
     expect(hrefs).toEqual(Object.values(secciones).map((s) => `#${s.id}`));
   });
 
+  it('cierra con la tarjeta de Siguiente caso después del último artículo', () => {
+    const { container } = mostrarCaso(casoA.slug);
+    const siguiente = screen.getByRole('link', { name: new RegExp(content.detalle.siguiente) });
+    expect(siguiente).toHaveAttribute('href', '/casos/dallas-note');
+    const ultimo = container.querySelector(`#${secciones.aprendizajes.id}`)!;
+    expect(ultimo.compareDocumentPosition(siguiente) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it('los h2 son solo los 4 artículos, sin Decisiones, Tecnologías ni Arquitectura', () => {
     mostrarCaso(casoA.slug);
     const titulos = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent);
@@ -86,6 +94,7 @@ describe('CaseDetail: variante corta y slug desconocido', () => {
     expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual([secciones.problema.titulo]);
     expect(container.querySelector('[data-diagrama]')).toBeNull();
     expect(screen.queryByRole('navigation', { name: content.detalle.indice })).toBeNull();
+    expect(screen.queryByText(content.detalle.siguiente)).toBeNull();
     expect(container.querySelector('[data-variante="corta"]')).not.toBeNull();
   });
 

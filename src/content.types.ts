@@ -251,6 +251,8 @@ export interface TextosDetalle {
   decisiones: string;
   // Rótulo y nombre accesible del índice lateral del detalle.
   indice: string;
+  // Rótulo de la tarjeta que lleva al caso siguiente.
+  siguiente: string;
   // Tarjeta final con enlace a #contacto.
   cta: { pregunta: string; accion: string };
 }

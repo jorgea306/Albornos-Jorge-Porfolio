@@ -247,6 +247,7 @@ export const content: Contenido = {
     metadatos: { rol: 'Rol', stack: 'Stack', duracion: 'Duración', estado: 'Estado' },
     resultados: 'Resultados',
     indice: 'En este caso',
+    siguiente: 'SIGUIENTE CASO →',
     secciones: {
       problema: { id: 'el-problema', titulo: 'El problema' },
       solucion: { id: 'la-solucion', titulo: 'La solución' },
@@ -367,4 +368,14 @@ export const content: Contenido = {
 
 export function getCaseBySlug(slug: string | undefined): Caso | undefined {
   return content.casos.find((caso) => caso.slug === slug);
+}
+
+// Caso que sigue al actual en el orden de `content.casos`, mirando solo los casos completos y publicados.
+// Es circular: después del último vuelve al primero. Un caso corto o un slug desconocido no tiene siguiente.
+export function getSiguienteCaso(slug: string | undefined): Caso | undefined {
+  const elegibles = content.casos.filter((caso) => caso.variante === 'completa' && caso.estado === 'publicado');
+  const posicion = elegibles.findIndex((caso) => caso.slug === slug);
+  if (posicion === -1) return undefined;
+  const siguiente = elegibles[(posicion + 1) % elegibles.length];
+  return siguiente.slug === slug ? undefined : siguiente;
 }
