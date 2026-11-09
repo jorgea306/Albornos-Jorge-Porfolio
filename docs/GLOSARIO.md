@@ -35,3 +35,5 @@ Términos técnicos que aparecen en los artefactos del portfolio, explicados con
 | Portapapeles del navegador (Clipboard API) | Interfaz que permite a una página copiar texto. `Contact.tsx` llama a `navigator.clipboard.writeText` con el email; si el navegador la bloquea o no la tiene, muestra un aviso y el email sigue visible. |
 | Región `aria-live` | Zona de la página cuyo texto, al cambiar, el lector de pantalla lee en voz alta sin mover el foco. En `Contact.tsx` anuncia "Email copiado". |
 | Botón invertido | Botón que usa los colores del bloque al revés (fondo = color del texto, letra = color del fondo). El bloque Contacto lo usa porque el botón principal salvia se perdería sobre el fondo salvia. |
+| Migas de pan (breadcrumbs) | Fila de enlaces al inicio de una página que muestra dónde está el lector. En `CaseHeader.tsx` es "Casos" (enlace a `/#casos`) seguido del título del caso, sin enlace. |
+| Variante de caso (completa o corta) | Campo `variante` de cada caso en `content.ts`. La completa muestra los cuatro artículos y el diagrama; la corta, de los casos en desarrollo, solo el problema. `CaseDetail.tsx` la deja en el HTML como `data-variante`. |
