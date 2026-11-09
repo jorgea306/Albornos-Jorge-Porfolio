@@ -253,6 +253,8 @@ export interface TextosDetalle {
   indice: string;
   // Rótulo de la tarjeta que lleva al caso siguiente.
   siguiente: string;
+  // Rótulo del recuadro que ocupa el lugar de la imagen o el video principal mientras falta el archivo.
+  medioPendiente: string;
   // Tarjeta final con enlace a #contacto.
   cta: { pregunta: string; accion: string };
 }

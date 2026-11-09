@@ -24,7 +24,7 @@ function imagenTarjeta(alt: string): Medio {
 // Los textos largos de cada caso se completan en los slices 7 y 8; aqui la identidad, el estado y lo que muestra el Inicio.
 function casoBase(
   datos: Pick<Caso, 'slug' | 'titulo' | 'resumen' | 'estado' | 'variante'> &
-    Partial<Omit<Caso, 'slug' | 'titulo' | 'resumen' | 'estado' | 'variante' | 'seo' | 'medios'>>,
+    Partial<Omit<Caso, 'slug' | 'titulo' | 'resumen' | 'estado' | 'variante' | 'seo'>>,
 ): Caso {
   // Valores por defecto: lo que no se pasa queda como pendiente. Los datos recibidos pisan estos valores.
   return {
@@ -248,6 +248,7 @@ export const content: Contenido = {
     resultados: 'Resultados',
     indice: 'En este caso',
     siguiente: 'SIGUIENTE CASO →',
+    medioPendiente: 'Captura pendiente',
     secciones: {
       problema: { id: 'el-problema', titulo: 'El problema' },
       solucion: { id: 'la-solucion', titulo: 'La solución' },
@@ -314,6 +315,17 @@ export const content: Contenido = {
         { valor: '6,5 min', etiqueta: 'de punta a punta', tipo: 'medido' },
         { valor: '2.608 min', etiqueta: 'estimado a mano: 652 productos × 4 min', tipo: 'estimado' },
         { valor: '2', etiqueta: 'columnas de entrada', tipo: 'medido' },
+      ],
+      // Imagen principal del detalle (1200×480). Jorge la exporta a public/casos/carga-masiva-productos/principal.webp y pasa `pendiente` a false.
+      medios: [
+        {
+          tipo: 'imagen',
+          archivo: 'principal.webp',
+          alt: 'Planilla de dos columnas y tienda online con los 652 productos cargados',
+          ancho: 1200,
+          alto: 480,
+          pendiente: true,
+        },
       ],
       aprendizajes: [
         'Estimar el tiempo de la carga manual antes de automatizar da un punto de comparación; por eso las 43,5 horas figuran como estimado.',

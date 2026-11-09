@@ -35,6 +35,16 @@ describe('CaseDetail: Caso A (plantilla completa)', () => {
     expect(within(migas).getByText(casoA.titulo)).toHaveAttribute('aria-current', 'page');
   });
 
+  it('la imagen principal pendiente aparece como recuadro rotulado entre el encabezado y los artículos', () => {
+    const { container } = mostrarCaso(casoA.slug);
+    const recuadro = screen.getByText(content.detalle.medioPendiente);
+    const h1 = screen.getByRole('heading', { level: 1 });
+    const primerArticulo = container.querySelector(`#${secciones.problema.id}`)!;
+    expect(h1.compareDocumentPosition(recuadro) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(recuadro.compareDocumentPosition(primerArticulo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(container.querySelector('img')).toBeNull();
+  });
+
   it('el índice "En este caso" va antes de los artículos y enlaza a los 4', () => {
     const { container } = mostrarCaso(casoA.slug);
     const indice = screen.getByRole('navigation', { name: content.detalle.indice });

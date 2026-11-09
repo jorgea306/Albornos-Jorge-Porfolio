@@ -3,6 +3,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import type { ReactNode } from 'react';
 import CaseHeader from '../components/case/CaseHeader';
+import CaseMedia from '../components/case/CaseMedia';
 import CaseSection from '../components/case/CaseSection';
 import CaseToc from '../components/case/CaseToc';
 import NextCase from '../components/case/NextCase';
@@ -89,6 +90,7 @@ export default function CaseDetail({ params }: Route.ComponentProps) {
   return (
     <Container maxWidth="lg" data-variante={caso.variante} sx={{ py: { xs: 3, md: 6 } }}>
       <CaseHeader caso={caso} />
+      <CaseMedia slug={caso.slug} medios={caso.medios} />
       {completa ? (
         // El índice va primero en el HTML: en pantallas chicas queda arriba y desde `md` pasa a la columna izquierda.
         <Box sx={{ display: 'grid', gap: { xs: 3, md: 6 }, gridTemplateColumns: { md: '220px minmax(0, 1fr)' }, alignItems: 'start' }}>
