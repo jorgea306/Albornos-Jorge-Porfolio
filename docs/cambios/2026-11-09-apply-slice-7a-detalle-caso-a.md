@@ -6,6 +6,6 @@
 
 **Cómo funciona ahora:** `CaseDetail` dibuja solo los artículos que tienen datos y los numera por orden de aparición. Deja `data-variante` en el HTML para que el build pueda comprobar qué plantilla se usó. `DiagramFrame.tsx` pone `data-diagrama` y la leyenda accesible del diagrama.
 
-**Decisiones:** el diagrama se resolvió con HTML y flechas SVG decorativas, no con un SVG único, para que el orden se lea como texto. Las tarjetas de resultado (`resultados`) y la tarjeta final de contacto quedaron para el slice 7b: sus textos ya están en `content.ts`, pero falta el componente.
+**Decisiones:** el diagrama se resolvió con HTML y flechas SVG decorativas, no con un SVG único, para que el orden se lea como texto. Las tarjetas de resultado (`CaseResults`) y la tarjeta final de contacto (`CaseCta`) quedaron para el slice 7b, donde se agregaron.
 
 Detalle SDD: `sdd/portfolio/tasks` (Slice 7a) y `sdd/portfolio/apply-progress` en Engram.

@@ -8,6 +8,8 @@
 
 **Decisiones:** con `--pendientes=aviso` el chequeo del diagrama solo avisa, porque Dallas Note, la Plataforma y la API son casos completos sin diagrama hasta el slice 8. `npm run verify` sin bandera sí falla. El estado activo del índice usa el salvia como relleno y no como color de texto, para mantener el contraste AA.
 
-**A revisar:** la imagen principal del Caso A (`public/casos/carga-masiva-productos/principal.webp`, 1200×480) sigue pendiente. Las tarjetas de resultado y la tarjeta final de contacto del 7a todavía no tienen componente.
+**Incluido del 7a:** el punto de control 7a.11 había postergado tres piezas y entraron acá. `CaseResults.tsx` dibuja las tarjetas de `Metrica` (solo en casos completos y solo si hay métricas) y rotula "Estimado" únicamente la de tipo `estimado`. `CaseCta.tsx` es la tarjeta final "¿Tenés un problema parecido?" hacia `/#contacto`, igual en las dos variantes y después de `NextCase`. `CargaMasiva.test.tsx` cubre las 3 cajas, el nombre accesible y la ausencia de "proveedor", "11 columnas" y "ZIP".
+
+**A revisar:** la imagen principal del Caso A (`public/casos/carga-masiva-productos/principal.webp`, 1200×480) sigue pendiente.
 
 Detalle SDD: `sdd/portfolio/tasks` (Slice 7b) y `sdd/portfolio/apply-progress` en Engram.
