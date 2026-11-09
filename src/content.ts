@@ -272,7 +272,7 @@ export const content: Contenido = {
       chips: ['Node.js', 'E-commerce'],
       destacado: {
         problema:
-          'Cargar a mano 652 productos en una tienda online llevaría unas 43 horas (estimado: 4 minutos por producto).',
+          'Cargar a mano 652 productos en una tienda online llevaría unas 43,5 horas (estimado: 4 minutos por producto).',
         solucion:
           'Un script de Node.js lee una planilla de dos columnas y publica el catálogo completo, sin cargar nada a mano.',
         resultado: '652 productos en 6,5 minutos',
