@@ -246,6 +246,7 @@ export const content: Contenido = {
   detalle: {
     metadatos: { rol: 'Rol', stack: 'Stack', duracion: 'Duración', estado: 'Estado' },
     resultados: 'Resultados',
+    indice: 'En este caso',
     secciones: {
       problema: { id: 'el-problema', titulo: 'El problema' },
       solucion: { id: 'la-solucion', titulo: 'La solución' },

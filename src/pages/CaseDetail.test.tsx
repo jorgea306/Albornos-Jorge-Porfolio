@@ -35,6 +35,15 @@ describe('CaseDetail: Caso A (plantilla completa)', () => {
     expect(within(migas).getByText(casoA.titulo)).toHaveAttribute('aria-current', 'page');
   });
 
+  it('el índice "En este caso" va antes de los artículos y enlaza a los 4', () => {
+    const { container } = mostrarCaso(casoA.slug);
+    const indice = screen.getByRole('navigation', { name: content.detalle.indice });
+    const primerArticulo = container.querySelector(`#${secciones.problema.id}`)!;
+    expect(indice.compareDocumentPosition(primerArticulo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    const hrefs = within(indice).getAllByRole('link').map((a) => a.getAttribute('href'));
+    expect(hrefs).toEqual(Object.values(secciones).map((s) => `#${s.id}`));
+  });
+
   it('los h2 son solo los 4 artículos, sin Decisiones, Tecnologías ni Arquitectura', () => {
     mostrarCaso(casoA.slug);
     const titulos = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent);
@@ -76,6 +85,7 @@ describe('CaseDetail: variante corta y slug desconocido', () => {
     expect(screen.getByText(corto.metadatos.estado)).toBeInTheDocument();
     expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual([secciones.problema.titulo]);
     expect(container.querySelector('[data-diagrama]')).toBeNull();
+    expect(screen.queryByRole('navigation', { name: content.detalle.indice })).toBeNull();
     expect(container.querySelector('[data-variante="corta"]')).not.toBeNull();
   });
 

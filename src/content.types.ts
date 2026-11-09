@@ -249,6 +249,8 @@ export interface TextosDetalle {
   secciones: { problema: SeccionDetalle; solucion: SeccionDetalle; funciona: SeccionDetalle; aprendizajes: SeccionDetalle };
   // Subtítulo de la lista de decisiones dentro de "La solución".
   decisiones: string;
+  // Rótulo y nombre accesible del índice lateral del detalle.
+  indice: string;
   // Tarjeta final con enlace a #contacto.
   cta: { pregunta: string; accion: string };
 }
