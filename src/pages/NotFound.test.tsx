@@ -2,7 +2,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { render, screen } from '@testing-library/react';
 import { createRoutesStub } from 'react-router';
 import { describe, expect, it } from 'vitest';
-import { content } from '../content';
+import { content, getCaseBySlug } from '../content';
 import { theme } from '../theme';
 import CaseDetail from './CaseDetail';
 import NotFound from './NotFound';
@@ -34,7 +34,7 @@ describe('pagina 404', () => {
 
   it('un slug existente muestra el caso y no la 404', () => {
     abrir('/casos/dallas-note');
-    expect(screen.getByRole('heading', { name: 'Dallas Note' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: getCaseBySlug('dallas-note')!.tituloLargo })).toBeInTheDocument();
     expect(screen.queryByText(content.noEncontrado.titulo)).not.toBeInTheDocument();
   });
 });

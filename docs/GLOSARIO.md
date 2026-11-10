@@ -39,3 +39,7 @@ Términos técnicos que aparecen en los artefactos del portfolio, explicados con
 | Variante de caso (completa o corta) | Campo `variante` de cada caso en `content.ts`. La completa muestra los cuatro artículos y el diagrama; la corta, de los casos en desarrollo, solo el problema. `CaseDetail.tsx` la deja en el HTML como `data-variante`. |
 | Desajuste de hidratación | Diferencia entre el HTML prerenderizado y lo que React dibuja en el navegador la primera vez; React avisa con un error. `useSeccionActiva.ts` lo evita arrancando siempre en la primera sección y cambiando recién dentro de `useEffect`. |
 | Navegación circular | Recorrido en el que, después del último elemento, se vuelve al primero. `getSiguienteCaso()` lo usa para que "Siguiente caso" del último caso completo lleve al Caso A. |
+| Multiempresa (multi-tenant) | Diseño en el que una misma plataforma atiende a varias empresas con sus datos separados. El caso `plataforma-agentes-ia` lo explica sin datos de clientes. |
+| DTO (Data Transfer Object, objeto de transferencia de datos) | Clase que describe la forma de los datos que entran a un endpoint y los valida antes de tocar la base. Aparece en el caso `api-usuarios-nestjs`. |
+| Monorepo | Un solo repositorio con varias aplicaciones. En Dallas Note, la API y la web viven juntas y comparten tipos de TypeScript. |
+| SVG con `role="img"` | Dibujo vectorial que el lector de pantalla trata como una imagen y nombra con su `<title>` y `<desc>`. `DiagramaVertical.tsx` lo usa para que el orden de los pasos se entienda sin ver el dibujo. |

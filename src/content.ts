@@ -272,19 +272,19 @@ export const content: Contenido = {
       chips: ['Node.js', 'E-commerce'],
       destacado: {
         problema:
-          'Cargar a mano 652 productos en una tienda online llevaría unas 43 horas (estimado: 4 minutos por producto).',
+          'Cargar a mano 652 productos en una tienda online llevaría unas 43,5 horas (estimado: 4 minutos por producto).',
         solucion:
           'Un script de Node.js lee una planilla de dos columnas y publica el catálogo completo, sin cargar nada a mano.',
         resultado: '652 productos en 6,5 minutos',
       },
       progreso: { texto: 'planilla.xlsx · 2 columnas → 652 / 652 productos · 6,5 min', valor: 100 },
-      // Textos del detalle redactados como borrador (PROVISORIOS): Jorge confirma rol, duración, estado y redacción.
+      // Textos del detalle cargados desde el texto final de Jorge (2026-11-09). La duración sigue pendiente.
       tituloLargo: 'De una planilla de dos columnas a una tienda online completa en minutos',
       bajada:
         'Un script de Node.js convierte una planilla de dos columnas en el catálogo completo de una tienda online: 652 productos en 6,5 minutos.',
-      metadatos: { rol: COMPLETAR, stack: ['Node.js'], duracion: COMPLETAR, estado: COMPLETAR },
+      metadatos: { rol: 'Desarrollo completo', stack: ['Node.js'], duracion: COMPLETAR, estado: 'En uso' },
       problema:
-        'Una tienda online necesitaba publicar su catálogo de 652 productos. Cargarlos uno por uno desde el panel de la tienda llevaría unas 43 horas (estimado: 4 minutos por producto) y cualquier error de tipeo habría que corregirlo a mano.',
+        'Una tienda online necesitaba publicar su catálogo de 652 productos. Cargarlos uno por uno desde el panel de la tienda llevaría unas 43,5 horas (estimado: 4 minutos por producto), y cualquier error de tipeo habría que corregirlo a mano.',
       solucion: [
         'La entrada es una planilla de solo dos columnas, para que preparar el catálogo no exija conocer el formato interno de la tienda.',
         'Un único script de Node.js hace todo el recorrido, de la planilla a la tienda publicada, sin pasos manuales en el medio.',
@@ -306,7 +306,7 @@ export const content: Contenido = {
           planilla: 'Planilla',
           planillaDetalle: '2 columnas',
           script: 'Script',
-          scriptDetalle: 'Node.js',
+          scriptDetalle: 'Node.js lee cada fila y arma la ficha completa del producto',
           tienda: 'Tienda online',
           tiendaDetalle: 'Productos publicados',
         },
@@ -314,7 +314,7 @@ export const content: Contenido = {
       resultados: [
         { valor: '652', etiqueta: 'productos cargados', tipo: 'medido' },
         { valor: '6,5 min', etiqueta: 'de punta a punta', tipo: 'medido' },
-        { valor: '2.608 min', etiqueta: 'estimado a mano: 652 productos × 4 min', tipo: 'estimado' },
+        { valor: '43,5 h', etiqueta: 'estimado a mano (652 productos × 4 min)', tipo: 'estimado' },
         { valor: '2', etiqueta: 'columnas de entrada', tipo: 'medido' },
       ],
       // Imagen principal del detalle (1200×480). Jorge la exporta a public/casos/carga-masiva-productos/principal.webp y pasa `pendiente` a false.
@@ -340,8 +340,55 @@ export const content: Contenido = {
         'Aplicación de planificación de tareas con vista semanal, matriz de Eisenhower, notificaciones push y un planificador con IA.',
       estado: 'publicado',
       variante: 'completa',
-      chips: ['React', 'Firebase', 'IA'],
+      chips: ['NestJS', 'React', 'PostgreSQL'],
       imagenTarjeta: imagenTarjeta('Captura de la aplicación Dallas Note'),
+      tituloLargo: 'Una semana organizada en un tablero: prioridades claras y avisos a tiempo',
+      bajada:
+        'Aplicación web para planificar la semana con un tablero estilo Kanban, matriz de Eisenhower, notificaciones push y un planificador con IA.',
+      metadatos: {
+        rol: 'Proyecto propio · diseño, backend, frontend y deploy',
+        stack: ['NestJS', 'Prisma', 'PostgreSQL', 'React', 'Vite', 'TypeScript'],
+        duracion: COMPLETAR,
+        estado: COMPLETAR,
+      },
+      problema:
+        'Las listas de tareas comunes muestran todo al mismo nivel: lo urgente se mezcla con lo importante y las fechas se pasan sin aviso. Necesitaba una herramienta para organizar la semana, ver de un vistazo qué hacer primero y recibir alertas antes de que algo se venciera.',
+      solucion: [
+        'Un tablero estilo Kanban con vista semanal, porque mover tarjetas entre columnas es más rápido que editar una lista.',
+        'Matriz de Eisenhower (urgente / importante) para decidir prioridades con un criterio claro y no a ojo.',
+        'Notificaciones push en el navegador para que los avisos lleguen aunque la app no esté abierta.',
+        'Un planificador con IA que ayuda a distribuir las tareas en la semana.',
+        'Monorepo con pnpm: la API y la web comparten tipos de TypeScript y se versionan juntas.',
+        'Diseño minimalista con paleta pastel y modo claro/oscuro.',
+      ],
+      arquitectura: {
+        diagrama: 'dallas-note',
+        descripcion: 'Flujo: la web consume la API, la API guarda en PostgreSQL y dispara los avisos.',
+        etiquetas: {
+          titulo: 'Diagrama de la arquitectura de Dallas Note',
+          web: 'Web',
+          webStack: 'React + Vite',
+          webDespliegue: 'Publicada en Cloudflare Pages',
+          api: 'API',
+          apiStack: 'NestJS + Prisma',
+          apiDespliegue: 'Desplegada en Render',
+          datos: 'Base de datos',
+          datosStack: 'PostgreSQL',
+          datosDespliegue: 'Alojada en Neon',
+          avisos: 'Avisos',
+          avisosDetalle: 'Notificaciones push en el navegador',
+        },
+      },
+      resultados: [
+        { valor: '2', etiqueta: 'apps en un monorepo (API y web)', tipo: 'medido' },
+        { valor: '2', etiqueta: 'temas: claro y oscuro', tipo: 'medido' },
+        { valor: 'USD 0', etiqueta: 'de infraestructura, en planes gratuitos sin tarjeta', tipo: 'medido' },
+      ],
+      aprendizajes: [
+        `Se puede desplegar un stack completo sin costo y sin cargar tarjeta combinando Render, Neon y Cloudflare Pages; la contracara es el arranque en frío de la API en el plan gratuito. ${COMPLETAR}`,
+        'Un monorepo con tipos compartidos evita que el frontend y el backend se desincronicen.',
+        COMPLETAR,
+      ],
     }),
     casoBase({
       slug: 'plataforma-agentes-ia',
@@ -352,6 +399,48 @@ export const content: Contenido = {
       variante: 'completa',
       chips: ['NestJS', 'TypeScript', 'Agentes'],
       imagenTarjeta: imagenTarjeta('Esquema de la plataforma de agentes de IA multiempresa'),
+      tituloLargo: 'Agentes de IA para varias empresas, con datos aislados y cada acción registrada',
+      bajada:
+        'Capa de lógica de negocio y orquestación sobre un motor de IA externo, para que varias empresas usen agentes con sus datos separados y sus acciones auditadas.',
+      metadatos: {
+        rol: 'Desarrollador backend y agentes de IA',
+        stack: ['NestJS', 'TypeScript', COMPLETAR],
+        duracion: `${COMPLETAR} Confirmar si fue en Global: marzo – septiembre 2026.`,
+        estado: COMPLETAR,
+      },
+      problema:
+        'Un motor de IA por sí solo responde preguntas, pero no sabe a qué empresa pertenece cada usuario, qué datos puede ver ni qué acciones tiene permitido ejecutar. Para ofrecer agentes a varias empresas hacía falta una capa intermedia que separara los datos de cada una y dejara registro de todo lo que hace el agente.',
+      solucion: [
+        'Arquitectura multiempresa (multi-tenant): cada consulta viaja con la identificación de su empresa y el agente solo accede a los datos de esa empresa.',
+        'El agente ejecuta tareas a través de herramientas definidas en el backend, no con acceso libre a los sistemas.',
+        'Cada acción queda en un registro de auditoría: quién la pidió, qué herramienta usó y qué resultado dio.',
+        'Integraciones por webhooks para conectar el agente con los sistemas de cada empresa.',
+        `Autenticación con JWT / OAuth2. ${COMPLETAR}`,
+      ],
+      arquitectura: {
+        diagrama: 'agentes-multiempresa',
+        descripcion:
+          'Flujo de una consulta: el usuario de una empresa consulta, el backend arma el contexto, el motor de IA decide, las herramientas actúan y la auditoría registra.',
+        etiquetas: {
+          titulo: 'Diagrama de la plataforma de agentes multiempresa',
+          usuario: 'Usuario de una empresa',
+          usuarioDetalle: 'Envía una consulta',
+          backend: 'Backend NestJS',
+          backendDetalle1: 'Identifica la empresa',
+          backendDetalle2: 'Valida permisos',
+          backendDetalle3: 'Arma el contexto',
+          motor: 'Motor de IA',
+          motorDetalle1: 'Decide qué hacer y qué',
+          motorDetalle2: 'herramienta usar',
+          herramientas: 'Herramientas',
+          herramientasDetalle1: 'Ejecutan la acción sobre los',
+          herramientasDetalle2: 'datos de esa empresa',
+          auditoria: 'Auditoría',
+          auditoriaDetalle: 'Registra la acción y su resultado',
+        },
+      },
+      // Sin cifras publicables: no hay `resultados` y la página no muestra la fila de tarjetas.
+      aprendizajes: [COMPLETAR, COMPLETAR],
     }),
     casoBase({
       slug: 'api-usuarios-nestjs',
@@ -361,6 +450,44 @@ export const content: Contenido = {
       variante: 'completa',
       chips: ['NestJS', 'MongoDB', 'Swagger'],
       imagenTarjeta: imagenTarjeta('Documentación Swagger de la API de usuarios'),
+      tituloLargo: 'Una API de usuarios ordenada, segura y documentada',
+      bajada: 'API REST para gestionar usuarios, hecha con NestJS y MongoDB y documentada con Swagger.',
+      metadatos: {
+        rol: 'Desarrollo completo',
+        stack: ['NestJS', 'TypeScript', 'MongoDB', 'Swagger'],
+        duracion: COMPLETAR,
+        estado: COMPLETAR,
+      },
+      problema:
+        'Casi cualquier sistema necesita registrar usuarios, validar sus datos y controlar quién accede a qué. Hacerlo de forma improvisada deja huecos de seguridad y endpoints que nadie más sabe cómo usar.',
+      solucion: [
+        'NestJS con módulos, controladores y servicios separados, para que cada parte tenga una sola responsabilidad.',
+        'Validación de los datos de entrada con DTOs antes de que lleguen a la base.',
+        `MongoDB para guardar los usuarios. ${COMPLETAR}`,
+        'Documentación automática con Swagger: cualquiera puede probar los endpoints desde el navegador.',
+        COMPLETAR,
+      ],
+      arquitectura: {
+        diagrama: 'api-usuarios',
+        descripcion: 'Flujo de una llamada: el cliente llama, el DTO valida, el servicio consulta MongoDB y Swagger documenta.',
+        etiquetas: {
+          titulo: 'Diagrama del flujo de la API de usuarios',
+          cliente: 'Cliente',
+          clienteDetalle1: 'Llama a un endpoint: crear,',
+          clienteDetalle2: 'listar, editar o borrar usuarios',
+          validacion: 'Validación',
+          validacionDetalle: 'El DTO revisa los datos',
+          servicio: 'Servicio (MongoDB)',
+          servicioDetalle1: 'Aplica la lógica y',
+          servicioDetalle2: 'consulta MongoDB',
+          swagger: 'Swagger',
+          swaggerDetalle1: 'Documenta cada endpoint',
+          swaggerDetalle2: 'con ejemplos',
+        },
+      },
+      // El texto fuente no trae números para este caso: la tarjeta queda como pendiente.
+      resultados: [{ valor: COMPLETAR, etiqueta: COMPLETAR, tipo: 'medido' }],
+      aprendizajes: [COMPLETAR, COMPLETAR],
     }),
     casoBase({
       slug: 'agente-whatsapp-ferreteria',
@@ -372,7 +499,8 @@ export const content: Contenido = {
     casoBase({
       slug: 'peluqueria-agente-ia',
       titulo: 'Agente de IA para peluquería',
-      resumen: 'Agente de IA que atiende las consultas de una peluquería.',
+      resumen:
+        'Sistema para peluquerías con turnos, cobros y un agente de IA que atiende consultas y sugiere cortes a partir de una foto.',
       estado: 'en-desarrollo',
       variante: 'corta',
     }),
