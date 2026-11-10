@@ -260,7 +260,8 @@ export const content: Contenido = {
     cta: { pregunta: '¿Tenés un problema parecido?', accion: 'Hablemos →' },
   },
   // El orden de este arreglo es el orden de las tarjetas del Inicio y de "Siguiente caso":
-  // Caso A (destacado), Dallas Note, Plataforma de agentes y API de usuarios; los "en desarrollo" al final (Laboratorio).
+  // Caso A (destacado), Dallas Note, Plataforma de agentes y API de usuarios; después los "en desarrollo" (Laboratorio):
+  // primero la carga de visitas y contactos (completo) y al final los dos cortos.
   casos: [
     casoBase({
       slug: 'carga-masiva-productos',
@@ -492,6 +493,67 @@ export const content: Contenido = {
       resultados: [{ valor: COMPLETAR, etiqueta: COMPLETAR, tipo: 'medido' }],
       aprendizajes: [COMPLETAR, COMPLETAR],
     }),
+    // Caso en desarrollo con variante completa: va al Laboratorio del Inicio y tiene detalle completo.
+    // Los datos que Jorge marcó como "a confirmar" llevan COMPLETAR. Sin volúmenes del negocio ni nombre interno del proyecto.
+    casoBase({
+      slug: 'carga-visitas-contactos',
+      titulo: 'Carga de visitas y contactos',
+      resumen:
+        'Sistema de carga de visitas y contactos con perfiles de vendedor y administrador, donde cada vendedor ve solo sus datos.',
+      estado: 'en-desarrollo',
+      variante: 'completa',
+      tituloLargo: 'Cada vendedor carga sus visitas y contactos, y ve solo lo suyo',
+      bajada:
+        'Sistema para que un equipo de vendedores registre visitas y contactos, con perfiles de vendedor y administrador y los datos aislados por usuario.',
+      metadatos: {
+        rol: `${COMPLETAR} · diseño, backend y frontend`,
+        stack: ['NestJS', 'Prisma', 'PostgreSQL (Neon)', 'React', 'TypeScript', 'Monorepo con pnpm'],
+        duracion: COMPLETAR,
+        estado: 'En desarrollo',
+      },
+      problema:
+        'Los vendedores registraban sus visitas y contactos sin un sistema central. El administrador no podía consultar lo que cargaba cada uno, y no había forma de asegurar que un vendedor no viera los contactos de otro.',
+      solucion: [
+        'El rol y el identificador del usuario salen solo del token de sesión. Ningún dato enviado por el cliente puede cambiar de quién es un contacto.',
+        'Un vendedor que pide un contacto ajeno recibe un 404, igual que si no existiera. El administrador ve todos.',
+        'Los contactos se borran de forma lógica (se marcan, no se eliminan), así el administrador puede recuperarlos.',
+        'Cada alta lleva un identificador del cliente que evita duplicados si se repite, pensado para cargar sin conexión más adelante.',
+        'El sistema avisa si el teléfono ya existe, pero no bloquea la carga.',
+        'Contraseñas con Argon2id, límite de intentos en el login y cambio de contraseña obligatorio en el primer ingreso.',
+        'PostgreSQL en Neon, elegido por tener un plan gratuito con buen rendimiento.',
+      ],
+      arquitectura: {
+        diagrama: 'carga-visitas',
+        descripcion:
+          'Flujo de una consulta: el usuario inicia sesión, la API valida el token y el rol, el aislamiento limita la consulta y PostgreSQL guarda los datos.',
+        etiquetas: {
+          titulo: 'Diagrama de la carga de visitas y contactos',
+          usuario: 'Usuario',
+          usuarioDetalle1: 'Inicia sesión como vendedor',
+          usuarioDetalle2: 'o administrador',
+          api: 'API NestJS',
+          apiDetalle: 'Valida el token y el rol',
+          aislamiento: 'Aislamiento',
+          aislamientoDetalle1: 'Limita cada consulta a los',
+          aislamientoDetalle2: 'contactos del usuario (el administrador',
+          aislamientoDetalle3: 'no tiene límite)',
+          datos: 'PostgreSQL',
+          datosDetalle: 'Guarda los contactos y las visitas',
+        },
+      },
+      resultados: [
+        { valor: '2', etiqueta: `perfiles: administrador y vendedor ${COMPLETAR}`, tipo: 'medido' },
+        {
+          valor: '188',
+          etiqueta: `pruebas automáticas (93 unitarias y 95 de integración, al 6 de noviembre) ${COMPLETAR}`,
+          tipo: 'medido',
+        },
+      ],
+      aprendizajes: [
+        `Centralizar la regla de "quién ve qué" en un único punto y probarla con un vendedor A, uno B y un administrador evita fugas de datos entre usuarios. ${COMPLETAR}`,
+        `Probar la conexión a Neon antes de armar el resto reveló que el arranque en frío tarda unos 2,4 segundos. ${COMPLETAR}`,
+      ],
+    }),
     casoBase({
       slug: 'agente-whatsapp-ferreteria',
       titulo: 'Agente de WhatsApp para ferretería',
@@ -514,10 +576,11 @@ export function getCaseBySlug(slug: string | undefined): Caso | undefined {
   return content.casos.find((caso) => caso.slug === slug);
 }
 
-// Caso que sigue al actual en el orden de `content.casos`, mirando solo los casos completos y publicados.
+// Caso que sigue al actual en el orden de `content.casos`, mirando solo los casos de variante completa
+// (incluye los que están en desarrollo pero ya tienen detalle completo, como la carga de visitas y contactos).
 // Es circular: después del último vuelve al primero. Un caso corto o un slug desconocido no tiene siguiente.
 export function getSiguienteCaso(slug: string | undefined): Caso | undefined {
-  const elegibles = content.casos.filter((caso) => caso.variante === 'completa' && caso.estado === 'publicado');
+  const elegibles = content.casos.filter((caso) => caso.variante === 'completa');
   const posicion = elegibles.findIndex((caso) => caso.slug === slug);
   if (posicion === -1) return undefined;
   const siguiente = elegibles[(posicion + 1) % elegibles.length];
