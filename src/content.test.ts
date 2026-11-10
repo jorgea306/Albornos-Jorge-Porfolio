@@ -33,7 +33,7 @@ describe('content.ts', () => {
     }
   });
 
-  it('ordena los casos: A, Dallas Note, Plataforma, API, Carga de visitas y luego los dos cortos', () => {
+  it('ordena los casos: A, Dallas Note, Plataforma, API, Carga de visitas, WhatsApp y peluquería', () => {
     expect(content.casos.map((c) => c.slug)).toEqual([
       'carga-masiva-productos',
       'dallas-note',
@@ -210,13 +210,15 @@ const COMPLETOS = [
   'plataforma-agentes-ia',
   'api-usuarios-nestjs',
   'carga-visitas-contactos',
+  'agente-whatsapp-ferreteria',
+  'peluqueria-agente-ia',
 ];
 
 describe('casos completos y cortos', () => {
   const completos = content.casos.filter((c) => c.variante === 'completa');
   const cortos = content.casos.filter((c) => c.variante === 'corta');
 
-  it('los 5 casos completos son los esperados', () => {
+  it('los 7 casos completos son los esperados', () => {
     expect(completos.map((c) => c.slug)).toEqual(COMPLETOS);
   });
 
@@ -282,16 +284,41 @@ describe('casos completos y cortos', () => {
     expect(caso.solucion).toHaveLength(7);
   });
 
-  it('los casos cortos no tienen arquitectura, aprendizajes ni resultados', () => {
-    expect(cortos).toHaveLength(2);
-    for (const caso of cortos) {
-      expect([caso.arquitectura, caso.resultados, caso.aprendizajes], caso.slug).toEqual([undefined, undefined, []]);
+  it('el agente de WhatsApp y la peluquería están en desarrollo con detalle completo, sin tarjetas de resultado y con lo pendiente en COMPLETAR', () => {
+    for (const slug of ['agente-whatsapp-ferreteria', 'peluqueria-agente-ia']) {
+      const caso = getCaseBySlug(slug)!;
+      expect([caso.estado, caso.variante, caso.metadatos.estado], slug).toEqual(['en-desarrollo', 'completa', 'En desarrollo']);
+      expect(caso.imagenTarjeta, slug).toBeUndefined();
+      expect(caso.resultados, slug).toBeUndefined();
+      expect(caso.metadatos.duracion, slug).toBe(COMPLETAR);
     }
+    const whatsapp = getCaseBySlug('agente-whatsapp-ferreteria')!;
+    expect(whatsapp.arquitectura?.diagrama).toBe('agente-whatsapp');
+    expect(whatsapp.metadatos.stack).toEqual([COMPLETAR]);
+    expect(whatsapp.solucion).toHaveLength(3);
+    expect(whatsapp.solucion[2]).toContain(COMPLETAR);
+    expect(whatsapp.aprendizajes[0]).toContain('Meta revisa y aprueba cada alta');
+    expect(whatsapp.aprendizajes[1]).toBe(COMPLETAR);
+    expect(JSON.stringify(whatsapp)).toContain('ferretería ficticia');
+  });
+
+  it('la peluquería carga el rol, el stack con NestJS por confirmar y 5 decisiones', () => {
+    const peluqueria = getCaseBySlug('peluqueria-agente-ia')!;
+    expect(peluqueria.arquitectura?.diagrama).toBe('peluqueria-agente');
+    expect(peluqueria.metadatos.rol).toBe('Proyecto propio · diseño, backend, web y mobile');
+    expect(peluqueria.metadatos.stack).toEqual(['TypeScript', `NestJS ${COMPLETAR}`, 'React', 'React Native (Expo)']);
+    expect(peluqueria.solucion).toHaveLength(5);
+    expect(peluqueria.aprendizajes).toEqual([COMPLETAR, COMPLETAR]);
+  });
+
+  // La plantilla corta (CaseDetail y CaseHeader) se conserva para casos futuros; sus tests usan un caso de prueba.
+  it('ningún caso queda en variante corta', () => {
+    expect(cortos).toEqual([]);
   });
 });
 
 describe('getSiguienteCaso', () => {
-  it('recorre el ciclo completo A → Dallas → Plataforma → API → Carga de visitas → A', () => {
+  it('recorre el ciclo completo A → Dallas → Plataforma → API → Carga de visitas → WhatsApp → peluquería → A', () => {
     const recorrido = [COMPLETOS[0]];
     for (let i = 0; i < COMPLETOS.length; i++) recorrido.push(getSiguienteCaso(recorrido.at(-1))!.slug);
     expect(recorrido).toEqual([...COMPLETOS, COMPLETOS[0]]);
@@ -304,13 +331,16 @@ describe('getSiguienteCaso', () => {
     expect(getSiguienteCaso('api-usuarios-nestjs')?.slug).toBe('carga-visitas-contactos');
   });
 
-  it('es circular: el último caso completo apunta al primero', () => {
-    expect(getSiguienteCaso('carga-visitas-contactos')?.slug).toBe('carga-masiva-productos');
+  it('el ciclo pasa por los casos en desarrollo: Carga de visitas → WhatsApp → peluquería', () => {
+    expect(getSiguienteCaso('carga-visitas-contactos')?.slug).toBe('agente-whatsapp-ferreteria');
+    expect(getSiguienteCaso('agente-whatsapp-ferreteria')?.slug).toBe('peluqueria-agente-ia');
   });
 
-  it('los casos cortos y los slugs desconocidos no tienen siguiente', () => {
-    expect(getSiguienteCaso('agente-whatsapp-ferreteria')).toBeUndefined();
-    expect(getSiguienteCaso('peluqueria-agente-ia')).toBeUndefined();
+  it('es circular: el último caso completo apunta al primero', () => {
+    expect(getSiguienteCaso('peluqueria-agente-ia')?.slug).toBe('carga-masiva-productos');
+  });
+
+  it('los slugs desconocidos no tienen siguiente', () => {
     expect(getSiguienteCaso('no-existe')).toBeUndefined();
     expect(getSiguienteCaso(undefined)).toBeUndefined();
   });

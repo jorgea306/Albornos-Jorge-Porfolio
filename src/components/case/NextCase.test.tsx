@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { content, getCaseBySlug } from '../../content';
+import type { Caso } from '../../content.types';
 import { mostrarConTema } from '../../test/render';
 import NextCase from './NextCase';
 
@@ -18,12 +19,18 @@ describe('NextCase', () => {
   });
 
   it('es circular: desde el último caso completo vuelve al Caso A', () => {
-    mostrarSiguiente('carga-visitas-contactos');
+    mostrarSiguiente('peluqueria-agente-ia');
     expect(screen.getByRole('link')).toHaveAttribute('href', '/casos/carga-masiva-productos');
   });
 
-  it('los casos cortos no muestran la tarjeta', () => {
-    const { container } = mostrarSiguiente('agente-whatsapp-ferreteria');
+  it('los casos en desarrollo con detalle completo también enlazan al siguiente', () => {
+    mostrarSiguiente('carga-visitas-contactos');
+    expect(screen.getByRole('link')).toHaveAttribute('href', '/casos/agente-whatsapp-ferreteria');
+  });
+
+  it('un caso corto o desconocido no muestra la tarjeta', () => {
+    const corto: Caso = { ...getCaseBySlug('dallas-note')!, slug: 'caso-corto-de-prueba', variante: 'corta' };
+    const { container } = mostrarConTema(<NextCase caso={corto} />);
     expect(container).toBeEmptyDOMElement();
   });
 });
