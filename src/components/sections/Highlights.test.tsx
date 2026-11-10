@@ -19,10 +19,10 @@ describe('Highlights', () => {
     expect(tarjetas[3]).toHaveTextContent('Multiempresa');
   });
 
-  it('los datos sin confirmar llevan el marcador COMPLETAR (content R8)', () => {
+  it('solo "4+ años" sigue sin confirmar y lleva el marcador COMPLETAR (content R8)', () => {
     mostrarConTema(<Highlights />);
     const tarjetas = screen.getAllByRole('listitem');
-    expect(tarjetas[0]).not.toHaveTextContent(COMPLETAR);
-    for (const tarjeta of tarjetas.slice(1)) expect(tarjeta).toHaveTextContent(COMPLETAR);
+    expect(tarjetas[1]).toHaveTextContent(COMPLETAR);
+    for (const i of [0, 2, 3]) expect(tarjetas[i]).not.toHaveTextContent(COMPLETAR);
   });
 });

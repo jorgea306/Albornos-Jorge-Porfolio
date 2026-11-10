@@ -100,14 +100,14 @@ export const content: Contenido = {
         ],
       },
     },
-    // Los tres últimos datos no están confirmados por Jorge: llevan COMPLETAR y npm run verify los marca.
+    // "Tech Lead" y "Multiempresa" están confirmados por Jorge. "4+ años" sigue con COMPLETAR (falta el mes de ingreso a Extrados) y npm run verify lo marca.
     destacados: {
       etiqueta: 'Datos destacados',
       items: [
         { valor: '652', descripcion: 'productos cargados en 6,5 minutos con un script' },
         { valor: `4+ años ${COMPLETAR}`, descripcion: 'desarrollando software en producción' },
-        { valor: `Tech Lead ${COMPLETAR}`, descripcion: 'experiencia liderando el frontend en React' },
-        { valor: `Multiempresa ${COMPLETAR}`, descripcion: 'agentes con datos aislados y acciones auditadas' },
+        { valor: 'Tech Lead', descripcion: 'experiencia liderando el frontend en React' },
+        { valor: 'Multiempresa', descripcion: 'agentes con datos aislados y acciones auditadas' },
       ],
     },
     servicios: {
