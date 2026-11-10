@@ -261,7 +261,7 @@ export const content: Contenido = {
   },
   // El orden de este arreglo es el orden de las tarjetas del Inicio y de "Siguiente caso":
   // Caso A (destacado), Dallas Note, Plataforma de agentes y API de usuarios; después los "en desarrollo" (Laboratorio):
-  // primero la carga de visitas y contactos (completo) y al final los dos cortos.
+  // primero la carga de visitas y contactos y al final el agente de WhatsApp y la peluquería (los tres con detalle completo).
   casos: [
     casoBase({
       slug: 'carga-masiva-productos',
@@ -559,7 +559,46 @@ export const content: Contenido = {
       titulo: 'Agente de WhatsApp para ferretería',
       resumen: 'Demostración de un agente que atiende consultas por WhatsApp, probado con una ferretería ficticia.',
       estado: 'en-desarrollo',
-      variante: 'corta',
+      variante: 'completa',
+      tituloLargo: 'Un agente que responde por WhatsApp lo que hoy contesta el mostrador',
+      bajada: 'Demostración de un agente que atiende consultas por WhatsApp, probado con una ferretería ficticia.',
+      metadatos: {
+        rol: 'Proyecto propio',
+        stack: [COMPLETAR],
+        duracion: COMPLETAR,
+        estado: 'En desarrollo',
+      },
+      problema:
+        'En un comercio chico, gran parte de los mensajes de WhatsApp son siempre las mismas preguntas: si hay stock, cuánto sale algo, a qué hora abren. Responderlas a mano interrumpe la atención en el mostrador y, fuera de horario, los clientes se quedan sin respuesta.',
+      solucion: [
+        'Un agente que entiende la consulta y usa herramientas para buscar productos, precios y horarios.',
+        'Probado con una ferretería ficticia, con catálogo y preguntas de ejemplo.',
+        `Cuando la consulta excede al agente, la deriva a una persona. ${COMPLETAR}`,
+      ],
+      arquitectura: {
+        diagrama: 'agente-whatsapp',
+        descripcion:
+          'Flujo de un mensaje: el cliente escribe por WhatsApp, el agente detecta la intención, las herramientas consultan el catálogo y la respuesta vuelve al cliente.',
+        etiquetas: {
+          titulo: 'Diagrama del agente de WhatsApp para ferretería',
+          cliente: 'Cliente',
+          clienteDetalle: 'Escribe por WhatsApp',
+          agente: 'Agente',
+          agenteDetalle1: 'Detecta la intención',
+          agenteDetalle2: '(stock, precio, horario)',
+          herramientas: 'Herramientas',
+          herramientasDetalle: 'Consultan el catálogo',
+          respuesta: 'Respuesta',
+          respuestaDetalle1: 'Vuelve al cliente',
+          respuestaDetalle2: 'por WhatsApp',
+        },
+      },
+      // En desarrollo: sin cifras, así que no hay `resultados` y la página no muestra la fila de tarjetas.
+      // El segundo aprendizaje queda pendiente para que la lista tenga los 2 ítems que pide la plantilla completa.
+      aprendizajes: [
+        'Habilitar la API de WhatsApp Business no depende solo del código: Meta revisa y aprueba cada alta, y en un intento de integración real el alta fue rechazada aunque se cumplían los requisitos. Hay que contemplar ese paso desde el principio.',
+        COMPLETAR,
+      ],
     }),
     casoBase({
       slug: 'peluqueria-agente-ia',
@@ -567,7 +606,47 @@ export const content: Contenido = {
       resumen:
         'Sistema para peluquerías con turnos, cobros y un agente de IA que atiende consultas y sugiere cortes a partir de una foto.',
       estado: 'en-desarrollo',
-      variante: 'corta',
+      variante: 'completa',
+      tituloLargo: 'Turnos, cobros y un agente que sugiere cortes a partir de una foto',
+      bajada:
+        'Sistema para peluquerías con gestión de turnos, cobros y comisiones, y un agente de IA que atiende consultas y propone cortes a partir de una foto.',
+      metadatos: {
+        rol: 'Proyecto propio · diseño, backend, web y mobile',
+        stack: ['TypeScript', `NestJS ${COMPLETAR}`, 'React', 'React Native (Expo)'],
+        duracion: COMPLETAR,
+        estado: 'En desarrollo',
+      },
+      problema:
+        'En una peluquería los turnos se anotan en papel o por WhatsApp, las comisiones de cada peluquero se calculan a mano al final del mes y el cliente muchas veces no sabe qué corte le quedaría bien hasta que está sentado en el sillón.',
+      solucion: [
+        'Gestión de turnos, servicios y cobros en un solo lugar.',
+        'Cálculo automático de comisiones por peluquero.',
+        'Un agente de IA al que el cliente le manda una foto y recibe opciones de cortes.',
+        'Dos apps sobre el mismo backend: web para el local y mobile con React Native (Expo).',
+        'Todo en TypeScript, del backend al celular.',
+      ],
+      arquitectura: {
+        diagrama: 'peluqueria-agente',
+        descripcion:
+          'Flujo del sistema: el cliente reserva o envía una foto, el backend gestiona turnos, cobros y comisiones, el agente de IA propone cortes y el local ve la agenda y las comisiones.',
+        etiquetas: {
+          titulo: 'Diagrama del sistema para peluquerías',
+          cliente: 'Cliente',
+          clienteDetalle1: 'Reserva un turno o envía',
+          clienteDetalle2: 'una foto desde la app',
+          backend: 'Backend',
+          backendDetalle1: 'Gestiona turnos, servicios,',
+          backendDetalle2: 'cobros y comisiones',
+          agente: 'Agente de IA',
+          agenteDetalle1: 'Analiza la foto y',
+          agenteDetalle2: 'propone cortes',
+          local: 'Local',
+          localDetalle1: 'Ve la agenda y las',
+          localDetalle2: 'comisiones desde la web',
+        },
+      },
+      // En desarrollo: sin cifras, así que no hay `resultados` y la página no muestra la fila de tarjetas.
+      aprendizajes: [COMPLETAR, COMPLETAR],
     }),
   ],
 };

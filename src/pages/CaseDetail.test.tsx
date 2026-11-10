@@ -1,12 +1,36 @@
 import { cleanup, screen, within } from '@testing-library/react';
 import type { ComponentProps } from 'react';
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { content, getCaseBySlug } from '../content';
+import type { Caso } from '../content.types';
 import { mostrarConTema } from '../test/render';
 import CaseDetail, { meta } from './CaseDetail';
 
 const { secciones } = content.detalle;
 const casoA = content.casos[0];
+
+// Ningún caso real queda en variante corta, pero la plantilla corta sigue existiendo en CaseDetail y CaseHeader.
+// Se la ejercita con un caso de prueba que se agrega a content.casos solo durante estos tests.
+const CASO_CORTO: Caso = {
+  ...getCaseBySlug('peluqueria-agente-ia')!,
+  slug: 'caso-corto-de-prueba',
+  titulo: 'Caso corto de prueba',
+  tituloLargo: 'Título largo del caso corto de prueba',
+  variante: 'corta',
+  arquitectura: undefined,
+  resultados: undefined,
+  solucion: [],
+  aprendizajes: [],
+};
+
+function usarCasoCorto() {
+  beforeEach(() => {
+    content.casos.push(CASO_CORTO);
+  });
+  afterEach(() => {
+    content.casos.splice(content.casos.indexOf(CASO_CORTO), 1);
+  });
+}
 
 function mostrarCaso(slug: string) {
   const props = { params: { slug } } as ComponentProps<typeof CaseDetail>;
@@ -108,8 +132,10 @@ describe('CaseDetail: Caso A (plantilla completa)', () => {
 });
 
 describe('CaseDetail: variante corta y slug desconocido', () => {
+  usarCasoCorto();
+
   it('el caso corto muestra título, estado y El problema, sin diagrama ni artículos de la solución', () => {
-    const corto = content.casos.find((c) => c.variante === 'corta')!;
+    const corto = CASO_CORTO;
     const { container } = mostrarCaso(corto.slug);
     expect(screen.getByRole('heading', { level: 1, name: corto.tituloLargo })).toBeInTheDocument();
     expect(screen.getByText(corto.metadatos.estado)).toBeInTheDocument();
@@ -131,9 +157,11 @@ describe('CaseDetail: variante corta y slug desconocido', () => {
   });
 });
 
-describe('CaseDetail: los 5 casos completos y los 2 cortos', () => {
+describe('CaseDetail: los 7 casos completos y la plantilla corta', () => {
+  usarCasoCorto();
+  // Los casos completos se leen de content.casos al definir el describe, antes de que beforeEach agregue el de prueba.
   const completos = content.casos.filter((c) => c.variante === 'completa');
-  const cortos = content.casos.filter((c) => c.variante === 'corta');
+  const cortos = [CASO_CORTO];
 
   it.each(completos.map((c) => c.slug))('%s muestra su diagrama dentro de "Cómo funciona", con nombre accesible', (slug) => {
     const caso = getCaseBySlug(slug)!;
@@ -146,10 +174,12 @@ describe('CaseDetail: los 5 casos completos y los 2 cortos', () => {
     expect(within(container.querySelector<HTMLElement>(`#${secciones.aprendizajes.id}`)!).getAllByRole('listitem').length).toBeGreaterThanOrEqual(2);
   });
 
-  it('la Plataforma no muestra la fila de tarjetas de resultado; Dallas Note y la API sí', () => {
-    mostrarCaso('plataforma-agentes-ia');
-    expect(screen.queryByRole('list', { name: content.detalle.resultados })).toBeNull();
-    cleanup();
+  it('la Plataforma, el agente de WhatsApp y la peluquería no muestran la fila de tarjetas de resultado; Dallas Note y la API sí', () => {
+    for (const slug of ['plataforma-agentes-ia', 'agente-whatsapp-ferreteria', 'peluqueria-agente-ia']) {
+      mostrarCaso(slug);
+      expect(screen.queryByRole('list', { name: content.detalle.resultados }), slug).toBeNull();
+      cleanup();
+    }
     mostrarCaso('dallas-note');
     expect(within(screen.getByRole('list', { name: content.detalle.resultados })).getAllByRole('listitem')).toHaveLength(3);
     cleanup();
@@ -157,7 +187,7 @@ describe('CaseDetail: los 5 casos completos y los 2 cortos', () => {
     expect(within(screen.getByRole('list', { name: content.detalle.resultados })).getAllByRole('listitem')).toHaveLength(1);
   });
 
-  it('Siguiente caso recorre A → Dallas → Plataforma → API → Carga de visitas → A', () => {
+  it('Siguiente caso recorre los 7 casos completos en el orden de content.casos y vuelve al Caso A', () => {
     for (const [i, caso] of completos.entries()) {
       mostrarCaso(caso.slug);
       const destino = completos[(i + 1) % completos.length].slug;
@@ -187,14 +217,15 @@ describe('CaseDetail: los 5 casos completos y los 2 cortos', () => {
   });
 
   it('los 7 casos tienen h1 y título de la pestaña distintos', () => {
-    const h1 = content.casos.map((caso) => {
+    const reales = content.casos.filter((caso) => caso !== CASO_CORTO);
+    const h1 = reales.map((caso) => {
       mostrarCaso(caso.slug);
       const texto = screen.getByRole('heading', { level: 1 }).textContent;
       cleanup();
       return texto;
     });
     expect(new Set(h1).size).toBe(7);
-    const titulos = content.casos.map((caso) => {
+    const titulos = reales.map((caso) => {
       const entradas = meta({ params: { slug: caso.slug } } as never) as { title?: string }[];
       return entradas.find((entrada) => entrada.title)?.title;
     });
