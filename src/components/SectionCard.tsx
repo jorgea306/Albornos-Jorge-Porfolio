@@ -8,9 +8,21 @@ import type { ReactNode } from 'react';
 import { Link as RouterLink } from 'react-router';
 import { FUENTE_MONO } from '../theme';
 
+// Espacio de imagen de la tarjeta. Si `pendiente` es true no hay archivo todavía: se muestra un recuadro rotulado.
+export interface MedioTarjeta {
+  src: string;
+  alt: string;
+  ancho: number;
+  alto: number;
+  pendiente: boolean;
+  // Rótulo visible del recuadro cuando falta el archivo.
+  textoPendiente: string;
+}
+
 interface Props {
   titulo: string;
   descripcion: string;
+  medio?: MedioTarjeta;
   // Ícono decorativo (debe venir con aria-hidden) y etiquetas cortas en fuente monoespaciada.
   icono?: ReactNode;
   etiquetas?: string[];
@@ -23,9 +35,44 @@ interface Props {
 }
 
 // Tarjeta comun de Servicios y Casos. Recibe todo el texto por props: no define ninguno propio.
-export default function SectionCard({ titulo, descripcion, icono, etiquetas, etiqueta, to, accion }: Props) {
+export default function SectionCard({ titulo, descripcion, medio, icono, etiquetas, etiqueta, to, accion }: Props) {
+  const imagen = medio && (
+    <Box sx={{ aspectRatio: `${medio.ancho} / ${medio.alto}`, width: '100%', overflow: 'hidden' }}>
+      {medio.pendiente ? (
+        <Box
+          sx={{
+            display: 'grid',
+            placeItems: 'center',
+            width: '100%',
+            height: '100%',
+            p: 2,
+            textAlign: 'center',
+            bgcolor: 'background.default',
+            borderBottom: 1,
+            borderColor: 'divider',
+            color: 'text.secondary',
+            fontFamily: FUENTE_MONO,
+            fontSize: '0.8125rem',
+          }}
+        >
+          {medio.textoPendiente}
+        </Box>
+      ) : (
+        // Se usa <img> nativo: en Box, `width` y `height` serían estilos y no atributos (el navegador los necesita para reservar espacio).
+        <img
+          src={medio.src}
+          alt={medio.alt}
+          width={medio.ancho}
+          height={medio.alto}
+          loading="lazy"
+          style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      )}
+    </Box>
+  );
+
   const contenido = (
-    <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 1, height: '100%' }}>
+    <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 1, flexGrow: 1 }}>
       {icono && (
         <Box
           sx={{
@@ -66,13 +113,21 @@ export default function SectionCard({ titulo, descripcion, icono, etiquetas, eti
   );
 
   return (
-    <Card component="article" variant="outlined" sx={{ height: '100%' }}>
+    <Card component="article" variant="outlined" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {to ? (
-        <CardActionArea component={RouterLink} to={to} sx={{ height: '100%' }}>
+        <CardActionArea
+          component={RouterLink}
+          to={to}
+          sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'flex-start' }}
+        >
+          {imagen}
           {contenido}
         </CardActionArea>
       ) : (
-        contenido
+        <>
+          {imagen}
+          {contenido}
+        </>
       )}
     </Card>
   );

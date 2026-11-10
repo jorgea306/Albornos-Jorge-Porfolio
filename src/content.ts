@@ -1,4 +1,4 @@
-import type { Ancla, Caso, Contenido } from './content.types';
+import type { Ancla, Caso, Contenido, Medio } from './content.types';
 
 // Marca todo dato que falta. content.test.ts y, mas adelante, scripts/listar-pendientes.mjs lo buscan.
 export const COMPLETAR = '[COMPLETAR]';
@@ -16,9 +16,16 @@ const ANCLA = {
   contacto: 'contacto',
 } satisfies Record<string, Ancla>;
 
-// Los textos largos de cada caso se completan en los slices 4 y 5; aqui la identidad, el estado y el resumen de la tarjeta.
+// Espacio de imagen de una tarjeta del Inicio. Mientras Jorge no exporte la captura queda `pendiente`
+// y la tarjeta muestra un recuadro rotulado en lugar de una imagen rota.
+function imagenTarjeta(alt: string): Medio {
+  return { tipo: 'imagen', archivo: 'tarjeta.webp', alt, ancho: 800, alto: 450, pendiente: true };
+}
+
+// Los textos largos de cada caso se completan en los slices 7 y 8; aqui la identidad, el estado y lo que muestra el Inicio.
 function casoBase(
-  datos: Pick<Caso, 'slug' | 'titulo' | 'resumen' | 'estado' | 'variante'>,
+  datos: Pick<Caso, 'slug' | 'titulo' | 'resumen' | 'estado' | 'variante'> &
+    Partial<Pick<Caso, 'chips' | 'destacado' | 'progreso' | 'imagenTarjeta'>>,
 ): Caso {
   return {
     ...datos,
@@ -134,10 +141,17 @@ export const content: Contenido = {
     },
     casos: {
       id: ANCLA.casos,
-      titulo: 'Casos',
-      introduccion: 'Cada caso explica el problema, cómo se resolvió y qué resultado dejó.',
-      enDesarrollo: 'En desarrollo',
+      encabezado: {
+        etiqueta: '02 / CASOS',
+        titulo: 'Problema, solución, resultado',
+        bajada: 'Cada caso explica el problema, cómo se resolvió y qué resultado dejó.',
+      },
+      destacado: 'Caso destacado',
+      rotulos: { problema: 'PROBLEMA', solucion: 'SOLUCIÓN', resultado: 'RESULTADO' },
+      leerCompleto: 'Leer el caso completo',
       verCaso: 'Ver caso',
+      imagenPendiente: 'Captura pendiente',
+      laboratorio: { titulo: 'Laboratorio', etiqueta: 'EN DESARROLLO' },
     },
     stack: {
       id: 'stack',
@@ -165,7 +179,8 @@ export const content: Contenido = {
     enlace: 'Ir al inicio',
     seoTitulo: 'Página no encontrada | Jorge Albornos',
   },
-  // El orden de este arreglo es el orden de las tarjetas en el Inicio: completos primero, "en desarrollo" al final.
+  // El orden de este arreglo es el orden de las tarjetas del Inicio y de "Siguiente caso":
+  // Caso A (destacado), Dallas Note, Plataforma de agentes y API de usuarios; los "en desarrollo" al final (Laboratorio).
   casos: [
     casoBase({
       slug: 'carga-masiva-productos',
@@ -174,6 +189,15 @@ export const content: Contenido = {
         'Un script convierte una planilla de dos columnas en la carga completa de una tienda online: 652 productos en 6,5 minutos.',
       estado: 'publicado',
       variante: 'completa',
+      chips: ['Node.js', 'E-commerce'],
+      destacado: {
+        problema:
+          'Cargar a mano 652 productos en una tienda online llevaría unas 43 horas (estimado: 4 minutos por producto).',
+        solucion:
+          'Un script de Node.js lee una planilla de dos columnas y publica el catálogo completo, sin cargar nada a mano.',
+        resultado: '652 productos en 6,5 minutos',
+      },
+      progreso: { texto: 'planilla.xlsx · 2 columnas → 652 / 652 productos · 6,5 min', valor: 100 },
     }),
     casoBase({
       slug: 'dallas-note',
@@ -182,13 +206,8 @@ export const content: Contenido = {
         'Aplicación de planificación de tareas con vista semanal, matriz de Eisenhower, notificaciones push y un planificador con IA.',
       estado: 'publicado',
       variante: 'completa',
-    }),
-    casoBase({
-      slug: 'api-usuarios-nestjs',
-      titulo: 'API de usuarios con NestJS',
-      resumen: 'API REST para gestionar usuarios, hecha con NestJS y MongoDB y documentada con Swagger.',
-      estado: 'publicado',
-      variante: 'completa',
+      chips: ['React', 'Firebase', 'IA'],
+      imagenTarjeta: imagenTarjeta('Captura de la aplicación Dallas Note'),
     }),
     casoBase({
       slug: 'plataforma-agentes-ia',
@@ -197,6 +216,17 @@ export const content: Contenido = {
         'Arquitectura para que varias empresas usen agentes de IA, cada una con sus datos aislados y sus acciones auditadas.',
       estado: 'publicado',
       variante: 'completa',
+      chips: ['NestJS', 'TypeScript', 'Agentes'],
+      imagenTarjeta: imagenTarjeta('Esquema de la plataforma de agentes de IA multiempresa'),
+    }),
+    casoBase({
+      slug: 'api-usuarios-nestjs',
+      titulo: 'API de usuarios con NestJS',
+      resumen: 'API REST para gestionar usuarios, hecha con NestJS y MongoDB y documentada con Swagger.',
+      estado: 'publicado',
+      variante: 'completa',
+      chips: ['NestJS', 'MongoDB', 'Swagger'],
+      imagenTarjeta: imagenTarjeta('Documentación Swagger de la API de usuarios'),
     }),
     casoBase({
       slug: 'agente-whatsapp-ferreteria',

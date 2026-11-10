@@ -33,9 +33,42 @@ describe('content.ts', () => {
     }
   });
 
+  it('ordena los casos como pide la spec: A, Dallas Note, Plataforma, API y luego los de desarrollo', () => {
+    expect(content.casos.map((c) => c.slug)).toEqual([
+      'carga-masiva-productos',
+      'dallas-note',
+      'plataforma-agentes-ia',
+      'api-usuarios-nestjs',
+      'agente-whatsapp-ferreteria',
+      'peluqueria-agente-ia',
+    ]);
+  });
+
+  it('solo el Caso A es destacado, con progreso, y repite 652 productos y 6,5 minutos', () => {
+    const destacados = content.casos.filter((c) => c.destacado);
+    expect(destacados.map((c) => c.slug)).toEqual(['carga-masiva-productos']);
+    const [casoA] = destacados;
+    expect(casoA.destacado?.resultado).toContain('652');
+    expect(casoA.destacado?.resultado).toContain('6,5');
+    expect(casoA.progreso?.texto).toBe('planilla.xlsx · 2 columnas → 652 / 652 productos · 6,5 min');
+  });
+
+  it('las 3 tarjetas del Inicio tienen espacio de imagen y chips; los casos en desarrollo no', () => {
+    const tarjetas = content.casos.filter((c) => c.estado === 'publicado' && !c.destacado);
+    expect(tarjetas).toHaveLength(3);
+    for (const caso of tarjetas) {
+      expect(caso.imagenTarjeta, caso.slug).toBeDefined();
+      expect(caso.chips?.length, caso.slug).toBeGreaterThan(0);
+    }
+    for (const caso of content.casos.filter((c) => c.estado === 'en-desarrollo')) {
+      expect(caso.imagenTarjeta, caso.slug).toBeUndefined();
+    }
+  });
+
   it('cada medio existe en public/casos/<slug>/ o esta marcado como pendiente', () => {
     for (const caso of content.casos) {
-      for (const medio of caso.medios) {
+      const medios = [...caso.medios, ...(caso.imagenTarjeta ? [caso.imagenTarjeta] : [])];
+      for (const medio of medios) {
         if (medio.pendiente) continue;
         const ruta = join(RAIZ, 'public', 'casos', caso.slug, medio.archivo);
         expect(existsSync(ruta), ruta).toBe(true);
