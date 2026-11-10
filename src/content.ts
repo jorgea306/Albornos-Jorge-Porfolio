@@ -187,14 +187,14 @@ export const content: Contenido = {
         },
       ],
     },
-    // Textos de la bio provisorios: Jorge debe confirmarlos. El primer párrafo lleva COMPLETAR hasta que lo apruebe, así npm run verify bloquea la publicación. El título técnico y los archivos de foto y CV siguen pendientes.
+    // Bio con la experiencia en Extrados y Global (texto de Jorge, 2026-11-09). Siguen con COMPLETAR el mes de ingreso en 2022 y lo que hace hoy (después de septiembre de 2026), así npm run verify bloquea la publicación. El título técnico y los archivos de foto y CV siguen pendientes.
     sobreMi: {
       id: ANCLA.sobreMi,
       encabezado: { etiqueta: '04 / SOBRE MÍ', titulo: 'Jorge Albornos' },
       subtitulo: `Técnico Superior en Desarrollo de Software ${COMPLETAR}`,
       parrafos: [
-        `Soy desarrollador full stack y trabajo desde Córdoba, Argentina. En Extrados desarrollo software en producción, con foco en APIs de backend y en interfaces con React. ${COMPLETAR}`,
-        'Hoy me dedico sobre todo a agentes de IA que usan herramientas y dejan registro de cada acción, y a automatizar tareas repetitivas para que un equipo recupere horas de trabajo.',
+        `Soy desarrollador full stack y trabajo desde Córdoba, Argentina. Entre 2022 (mes de ingreso: ${COMPLETAR}) y marzo de 2026 trabajé en Extrados Software Technology: entré como Full Stack Developer y llegué a React Tech Lead, coordinando el equipo de frontend, haciendo code reviews, definiendo la arquitectura y acompañando a otros desarrolladores. Después, hasta septiembre de 2026, en Global armé el backend de una plataforma de agentes de IA con NestJS y TypeScript.`,
+        `Hoy me dedico sobre todo a agentes de IA que usan herramientas y dejan registro de cada acción, y a automatizar tareas repetitivas para que un equipo recupere horas de trabajo. ${COMPLETAR}`,
       ],
       foto: {
         tipo: 'imagen',

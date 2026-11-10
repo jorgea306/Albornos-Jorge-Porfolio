@@ -115,10 +115,12 @@ describe('content.ts', () => {
     expect(content.redes.linkedin.url).toBe(COMPLETAR);
   });
 
-  it('la bio tiene dos párrafos y nombra a Extrados', () => {
+  it('la bio tiene dos párrafos, nombra a Extrados y Global, y marca como pendiente lo que hace hoy', () => {
     const { parrafos } = content.inicio.sobreMi;
     expect(parrafos).toHaveLength(2);
     expect(parrafos.join(' ')).toContain('Extrados');
+    expect(parrafos.join(' ')).toContain('Global');
+    expect(parrafos[1]).toContain(COMPLETAR);
   });
 
   it('exporta el marcador COMPLETAR', () => {

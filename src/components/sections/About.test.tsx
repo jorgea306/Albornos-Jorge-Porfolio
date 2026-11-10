@@ -9,13 +9,16 @@ const fotoReal = { ...sobreMi.foto, pendiente: false };
 const cvReal = { ...sobreMi.cv, pendiente: false };
 
 describe('About', () => {
-  it('muestra el encabezado, dos párrafos que nombran a Extrados y no tiene sección Experiencia', () => {
+  it('muestra el encabezado, dos párrafos que nombran a Extrados y a Global, y no tiene sección Experiencia', () => {
     mostrarConTema(<About />);
     expect(screen.getByText('04 / SOBRE MÍ')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2, name: 'Jorge Albornos' })).toBeInTheDocument();
     expect(sobreMi.parrafos).toHaveLength(2);
     for (const parrafo of sobreMi.parrafos) expect(screen.getByText(parrafo)).toBeInTheDocument();
     expect(sobreMi.parrafos.join(' ')).toContain('Extrados');
+    expect(sobreMi.parrafos.join(' ')).toContain('Global');
+    // La experiencia en Extrados terminó en marzo de 2026: no puede quedar en presente.
+    expect(sobreMi.parrafos.join(' ')).not.toMatch(/En Extrados desarrollo/);
     expect(screen.queryByText(/experiencia/i)).not.toBeInTheDocument();
   });
 
