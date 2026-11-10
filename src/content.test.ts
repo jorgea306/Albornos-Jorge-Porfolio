@@ -90,3 +90,35 @@ describe.skipIf(!existsSync(ARCHIVO_DENYLIST))('confidencialidad', () => {
     expect(hallazgos).toEqual([]);
   });
 });
+
+// Voseo (portfolio-content R7): lista fija de tuteo = union de la spec y del diseno.
+// "tu/tus" como posesivo es valido ("a tu negocio"), por eso no figura en la lista.
+const FORMAS_DE_TUTEO = ['Contáctame', 'puedes', 'tienes', 'quieres', 'cuéntame', 'escríbeme', 'para ti'];
+
+// Dentro de un template literal la barra se escribe doble: con `\p` suelto se pierde y queda `p{L}`.
+function marcaForma(frase: string, forma: string): boolean {
+  return new RegExp(`(?<![\\p{L}])${forma}(?![\\p{L}])`, 'iu').test(frase);
+}
+
+function contieneTuteo(frase: string): boolean {
+  return FORMAS_DE_TUTEO.some((forma) => marcaForma(frase, forma));
+}
+
+describe('tono de los textos', () => {
+  const texto = JSON.stringify(content);
+
+  it.each(FORMAS_DE_TUTEO)('no usa la forma de tuteo "%s"', (forma) => {
+    expect(marcaForma(texto, forma)).toBe(false);
+  });
+
+  it('el posesivo "a tu negocio" no se marca como tuteo', () => {
+    expect(texto).toMatch(/a tu negocio/);
+    expect(contieneTuteo('le ahorran horas a tu negocio')).toBe(false);
+    expect(contieneTuteo('si quieres, escríbeme')).toBe(true);
+  });
+
+  it('respeta el límite de palabra (regresión de la barra perdida en \\p{L})', () => {
+    expect(contieneTuteo('el grupuedes raro')).toBe(false);
+    expect(contieneTuteo('lo que {puedes}')).toBe(true);
+  });
+});

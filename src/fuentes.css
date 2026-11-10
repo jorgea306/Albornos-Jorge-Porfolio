@@ -1,0 +1,32 @@
+/*
+ * Tipografías del sitio, servidas desde el propio build (sin Google Fonts).
+ * Los paquetes @fontsource-variable no exponen un CSS solo latino: su wght.css declara
+ * 5 a 7 subconjuntos y el build copia todos los archivos. Por eso declaramos acá
+ * únicamente el subconjunto latino (incluye á, é, ñ, ¿ y ¡) de cada familia.
+ * Cada archivo es una fuente variable: un solo .woff2 contiene todos los pesos.
+ */
+@font-face {
+  font-family: 'Bricolage Grotesque Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url(../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2)
+    format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2) format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url(../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2)
+    format('woff2-variations');
+}
