@@ -43,6 +43,7 @@ export interface Caso {
 
 export interface Contenido {
   sitio: Sitio;
+  inicio: Inicio;
   interfaz: TextosInterfaz;
   noEncontrado: TextosNoEncontrado;
   casos: Caso[];
@@ -54,6 +55,56 @@ export interface Sitio {
   descripcion: string;
   // URL publica absoluta (para Open Graph). Pendiente hasta conocer el dominio de *.vercel.app.
   url: string;
+}
+
+// Textos de las secciones del Inicio. `id` es el ancla a la que apuntan los botones del Hero.
+export interface Enlace {
+  texto: string;
+  destino: string;
+}
+
+export interface TextosHero {
+  etiqueta: string;
+  titulo: string;
+  principal: Enlace;
+  secundario: Enlace;
+}
+
+export interface Servicio {
+  titulo: string;
+  descripcion: string;
+}
+
+export interface TextosServicios {
+  id: string;
+  titulo: string;
+  items: Servicio[];
+}
+
+export interface TextosCasos {
+  id: string;
+  titulo: string;
+  introduccion: string;
+  enDesarrollo: string;
+  verCaso: string;
+}
+
+export interface GrupoStack {
+  titulo: string;
+  tecnologias: string[];
+}
+
+export interface TextosStack {
+  id: string;
+  titulo: string;
+  grupos: GrupoStack[];
+}
+
+export interface Inicio {
+  hero: TextosHero;
+  servicios: TextosServicios;
+  casos: TextosCasos;
+  stack: TextosStack;
 }
 
 export interface TextosInterfaz {
