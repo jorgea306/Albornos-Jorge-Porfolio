@@ -53,6 +53,29 @@ describe('content.ts', () => {
     expect(casoA.progreso?.texto).toBe('planilla.xlsx · 2 columnas → 652 / 652 productos · 6,5 min');
   });
 
+  it('el Caso A tiene título largo, 4 métricas con la estimada explicada, terminal y diagrama de 3 cajas', () => {
+    const casoA = getCaseBySlug('carga-masiva-productos')!;
+    expect(casoA.tituloLargo).toBe('De una planilla de dos columnas a una tienda online completa en minutos');
+    expect(casoA.tituloLargo).not.toBe(casoA.titulo);
+    expect(casoA.resultados?.map((m) => m.valor)).toEqual(['652', '6,5 min', '2.608 min', '2']);
+    const estimadas = casoA.resultados!.filter((m) => m.tipo === 'estimado');
+    expect(estimadas).toHaveLength(1);
+    expect(estimadas[0].etiqueta).toContain('652 productos × 4 min');
+    expect(casoA.terminal?.lineas[0].texto).toBe('node cargar-productos.js planilla.xlsx');
+    expect(casoA.terminal?.lineas.at(-1)?.texto).toBe('652 / 652 productos cargados · 6m 30s');
+    expect(casoA.arquitectura?.diagrama).toBe('carga-masiva');
+    expect(casoA.aprendizajes.length).toBeGreaterThanOrEqual(2);
+    expect(casoA.solucion.length).toBeGreaterThan(0);
+  });
+
+  it('los metadatos desconocidos del Caso A llevan COMPLETAR y el Estado de los casos en desarrollo está escrito', () => {
+    const { metadatos } = getCaseBySlug('carga-masiva-productos')!;
+    expect([metadatos.rol, metadatos.duracion, metadatos.estado]).toEqual([COMPLETAR, COMPLETAR, COMPLETAR]);
+    for (const caso of content.casos.filter((c) => c.estado === 'en-desarrollo')) {
+      expect(caso.metadatos.estado, caso.slug).toBe('En desarrollo');
+    }
+  });
+
   it('las 3 tarjetas del Inicio tienen espacio de imagen y chips; los casos en desarrollo no', () => {
     const tarjetas = content.casos.filter((c) => c.estado === 'publicado' && !c.destacado);
     expect(tarjetas).toHaveLength(3);

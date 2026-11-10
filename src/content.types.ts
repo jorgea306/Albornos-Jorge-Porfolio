@@ -2,12 +2,20 @@
 
 export type DiagramId = 'carga-masiva' | 'agentes-multiempresa' | 'dallas-note' | 'api-usuarios';
 
+// Una tarjeta de resultado: un número y lo que significa. Sin "antes/después": el valor estimado es su propia tarjeta.
 export interface Metrica {
+  valor: string;
   etiqueta: string;
-  antes?: string;
-  despues: string;
   // 'estimado' obliga a rotular el valor como estimado (lo verifica content.test.ts).
   tipo: 'medido' | 'estimado';
+}
+
+// Fila de datos bajo el título del detalle. Un dato desconocido lleva COMPLETAR.
+export interface MetadatosCaso {
+  rol: string;
+  stack: string[];
+  duracion: string;
+  estado: string;
 }
 
 export interface Medio {
@@ -36,15 +44,22 @@ export interface Caso {
   progreso?: { texto: string; valor: number };
   // Espacio de imagen de la tarjeta del Inicio; `pendiente` mientras falte el archivo.
   imagenTarjeta?: Medio;
+  // Título largo del h1 del detalle (el corto, `titulo`, queda para tarjetas y migas) y bajada que lo acompaña.
+  tituloLargo: string;
+  bajada: string;
+  metadatos: MetadatosCaso;
   problema: string;
-  tecnologias: string[];
+  // Decisiones de "La solución": una viñeta por decisión. El stack vive en `metadatos`, no en una sección propia.
+  solucion: string[];
+  // Terminal ilustrativo de "La solución" (solo el Caso A).
+  terminal?: EjemploIlustrativo;
   arquitectura?: {
     diagrama: DiagramId;
     descripcion: string;
     etiquetas: Record<string, string>;
   };
-  decisiones?: string[];
   resultados?: Metrica[];
+  aprendizajes: string[];
   medios: Medio[];
   seo: { titulo: string; descripcion: string; ogImagen: string };
 }
@@ -56,6 +71,7 @@ export interface Contenido {
   inicio: Inicio;
   interfaz: TextosInterfaz;
   noEncontrado: TextosNoEncontrado;
+  detalle: TextosDetalle;
   casos: Caso[];
 }
 
@@ -216,6 +232,25 @@ export interface TextosInterfaz {
   cambiarTema: string;
   ejemploIlustrativo: string;
   pie: string;
+}
+
+export interface SeccionDetalle {
+  // Ancla del artículo; el índice lateral del slice 7b enlaza a ella.
+  id: string;
+  titulo: string;
+}
+
+// Textos fijos de la plantilla de detalle de caso. El número de cada artículo sale de su posición.
+export interface TextosDetalle {
+  // Etiquetas de la fila de metadatos.
+  metadatos: { rol: string; stack: string; duracion: string; estado: string };
+  // Nombre accesible de la fila de tarjetas de resultado.
+  resultados: string;
+  secciones: { problema: SeccionDetalle; solucion: SeccionDetalle; funciona: SeccionDetalle; aprendizajes: SeccionDetalle };
+  // Subtítulo de la lista de decisiones dentro de "La solución".
+  decisiones: string;
+  // Tarjeta final con enlace a #contacto.
+  cta: { pregunta: string; accion: string };
 }
 
 export interface TextosNoEncontrado {
