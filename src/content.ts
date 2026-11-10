@@ -404,8 +404,8 @@ export const content: Contenido = {
         'Capa de lógica de negocio y orquestación sobre un motor de IA externo, para que varias empresas usen agentes con sus datos separados y sus acciones auditadas.',
       metadatos: {
         rol: 'Desarrollador backend y agentes de IA',
-        stack: ['NestJS', 'TypeScript', COMPLETAR],
-        duracion: `${COMPLETAR} Confirmar si fue en Global: marzo – septiembre 2026.`,
+        stack: ['NestJS', 'TypeScript', 'Express/Node (servicios previos)', COMPLETAR],
+        duracion: 'Marzo – septiembre de 2026',
         estado: COMPLETAR,
       },
       problema:
@@ -415,6 +415,9 @@ export const content: Contenido = {
         'El agente ejecuta tareas a través de herramientas definidas en el backend, no con acceso libre a los sistemas.',
         'Cada acción queda en un registro de auditoría: quién la pidió, qué herramienta usó y qué resultado dio.',
         'Integraciones por webhooks para conectar el agente con los sistemas de cada empresa.',
+        'El servicio central de agentes actúa como orquestador: configura cada agente (instrucciones, herramientas y modelo de respaldo) y ejecuta las llamadas a herramientas, pero no invoca modelos directamente.',
+        'Un clasificador y un resumen automático de casos con métricas de calidad.',
+        'Integraciones de negocio (clientes, contactos, calendario y tareas) expuestas como herramientas del agente.',
         `Autenticación con JWT / OAuth2. ${COMPLETAR}`,
       ],
       arquitectura: {
