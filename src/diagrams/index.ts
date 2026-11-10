@@ -3,6 +3,7 @@ import type { DiagramId } from '../content.types';
 import AgentesMultiempresa from './AgentesMultiempresa';
 import ApiUsuarios from './ApiUsuarios';
 import CargaMasiva from './CargaMasiva';
+import CargaVisitas from './CargaVisitas';
 import DallasNote from './DallasNote';
 import type { PropsDiagrama } from './DiagramFrame';
 
@@ -12,4 +13,5 @@ export const diagramas: Record<DiagramId, ComponentType<PropsDiagrama>> = {
   'agentes-multiempresa': AgentesMultiempresa,
   'dallas-note': DallasNote,
   'api-usuarios': ApiUsuarios,
+  'carga-visitas': CargaVisitas,
 };
