@@ -1,8 +1,10 @@
+import About from '../components/sections/About';
 import Cases from '../components/sections/Cases';
+import Contact from '../components/sections/Contact';
 import Hero from '../components/sections/Hero';
 import Highlights from '../components/sections/Highlights';
+import Process from '../components/sections/Process';
 import Services from '../components/sections/Services';
-import Stack from '../components/sections/Stack';
 import { content } from '../content';
 import { metaPagina } from '../lib/meta';
 
@@ -14,7 +16,7 @@ export function meta() {
   });
 }
 
-// Faltan Proceso, Sobre mí y Contacto: llegan en el slice 6, que fija el orden final.
+// Orden final del Inicio (sec R1). El pie vive en root.tsx, así que no figura acá.
 export default function Home() {
   return (
     <>
@@ -22,7 +24,9 @@ export default function Home() {
       <Highlights />
       <Services />
       <Cases />
-      <Stack />
+      <Process />
+      <About />
+      <Contact />
     </>
   );
 }

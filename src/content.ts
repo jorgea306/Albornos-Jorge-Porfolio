@@ -6,7 +6,6 @@ export const COMPLETAR = '[COMPLETAR]';
 const OG_GENERAL = '/og/general.png';
 
 // Anclas de las secciones del Inicio. La barra, el pie y los botones del Hero apuntan a ellas.
-// 'proceso', 'sobre-mi' y 'contacto' todavia no existen en la pagina: las secciones llegan en el slice 6.
 const ANCLA = {
   inicio: 'inicio',
   servicios: 'servicios',
@@ -153,19 +152,74 @@ export const content: Contenido = {
       imagenPendiente: 'Captura pendiente',
       laboratorio: { titulo: 'Laboratorio', etiqueta: 'EN DESARROLLO' },
     },
+    proceso: {
+      id: ANCLA.proceso,
+      encabezado: {
+        etiqueta: '03 / CÓMO TRABAJO',
+        titulo: 'De la charla al sistema funcionando',
+      },
+      pasos: [
+        {
+          titulo: 'Diagnóstico',
+          descripcion: 'Entiendo qué tarea te consume tiempo y qué sistemas intervienen antes de proponer nada.',
+        },
+        {
+          titulo: 'Prototipo',
+          descripcion: 'Armo una versión mínima que resuelve un caso real, para que la veas funcionando.',
+        },
+        {
+          titulo: 'Implementación',
+          descripcion: 'Lo integro con tus sistemas, con pruebas automáticas y registro de cada acción.',
+        },
+        {
+          titulo: 'Acompañamiento',
+          descripcion: 'Reviso los resultados después de la entrega y ajusto lo que haga falta.',
+        },
+      ],
+    },
+    // Textos de la bio provisorios: Jorge debe confirmarlos. El primer párrafo lleva COMPLETAR hasta que lo apruebe, así npm run verify bloquea la publicación. El título técnico y los archivos de foto y CV siguen pendientes.
+    sobreMi: {
+      id: ANCLA.sobreMi,
+      encabezado: { etiqueta: '04 / SOBRE MÍ', titulo: 'Jorge Albornos' },
+      subtitulo: `Técnico Superior en Desarrollo de Software ${COMPLETAR}`,
+      parrafos: [
+        `Soy desarrollador full stack y trabajo desde Córdoba, Argentina. En Extrados desarrollo software en producción, con foco en APIs de backend y en interfaces con React. ${COMPLETAR}`,
+        'Hoy me dedico sobre todo a agentes de IA que usan herramientas y dejan registro de cada acción, y a automatizar tareas repetitivas para que un equipo recupere horas de trabajo.',
+      ],
+      foto: {
+        tipo: 'imagen',
+        archivo: 'retrato.webp',
+        alt: 'Retrato de Jorge Albornos',
+        ancho: 480,
+        alto: 480,
+        pendiente: true,
+      },
+      cv: { archivo: 'cv-jorge-albornos.pdf', texto: 'Descargar CV', pendiente: true },
+    },
+    // Orden de la spec (sec R10): Backend, IA, Frontend, Datos, Cloud.
     stack: {
-      id: 'stack',
       titulo: 'Stack',
       grupos: [
         { titulo: 'Backend', tecnologias: ['Node.js', 'NestJS', 'TypeScript', 'TypeORM', 'JWT y OAuth2'] },
-        { titulo: 'Frontend', tecnologias: ['React', 'TypeScript', 'Material UI', 'React Router'] },
         {
-          titulo: 'IA aplicada',
+          titulo: 'IA',
           tecnologias: ['Agentes con herramientas', 'Webhooks', 'Auditoría de acciones', 'Multiempresa'],
         },
+        { titulo: 'Frontend', tecnologias: ['React', 'TypeScript', 'Material UI', 'React Router'] },
         { titulo: 'Datos', tecnologias: ['MySQL', 'MongoDB', 'Firebase'] },
         { titulo: 'Cloud', tecnologias: ['AWS EC2', 'Vercel'] },
       ],
+    },
+    contacto: {
+      id: ANCLA.contacto,
+      titulo: '¿Qué tarea te gustaría no volver a hacer a mano?',
+      bajada: 'Contame en dos líneas y te respondo con una propuesta concreta.',
+      telefono: { texto: '+54 9 383 440-0061', url: 'tel:+5493834400061' },
+      whatsapp: { texto: 'WhatsApp', url: 'https://wa.me/5493834400061' },
+      email: 'jorgea306@gmail.com',
+      copiar: 'Copiar email',
+      copiado: 'Email copiado',
+      copiarFallo: 'No se pudo copiar. Seleccioná el email y copialo a mano.',
     },
   },
   interfaz: {
