@@ -65,21 +65,61 @@ export interface Enlace {
   destino: string;
 }
 
-export interface TextosHero {
+// Cabecera de una seccion del Inicio: etiqueta mono ("01 / SERVICIOS"), titulo h2 y bajada opcional.
+export interface Encabezado {
   etiqueta: string;
   titulo: string;
+  bajada?: string;
+}
+
+// Cada linea indica su rol con texto (etiqueta), no solo con color. El tipo solo cambia el estilo.
+export interface LineaEjemplo {
+  tipo: 'comando' | 'entrada' | 'evento' | 'salida' | 'ok';
+  etiqueta?: string;
+  texto: string;
+}
+
+// Consola o terminal ficticio. El rotulo "Ejemplo ilustrativo" lo pone el componente (interfaz.ejemploIlustrativo).
+export interface EjemploIlustrativo {
+  titulo: string;
+  lineas: LineaEjemplo[];
+  // Continua el rotulo: se muestra como "Ejemplo ilustrativo <leyenda>".
+  leyenda: string;
+}
+
+export interface TextosHero {
+  etiqueta: string;
+  // El texto resaltado va dentro del mismo h1, para que se lea como una sola frase.
+  titulo: { antes: string; resaltado: string; despues: string };
+  descripcion: string;
   principal: Enlace;
   secundario: Enlace;
+  consola: EjemploIlustrativo;
 }
+
+export interface DatoDestacado {
+  valor: string;
+  descripcion: string;
+}
+
+export interface TextosDestacados {
+  // Nombre accesible de la franja (no tiene titulo visible).
+  etiqueta: string;
+  items: DatoDestacado[];
+}
+
+export type IconoServicio = 'agente' | 'api' | 'interfaz' | 'automatizacion';
 
 export interface Servicio {
   titulo: string;
   descripcion: string;
+  icono: IconoServicio;
+  etiquetas: string[];
 }
 
 export interface TextosServicios {
   id: string;
-  titulo: string;
+  encabezado: Encabezado;
   items: Servicio[];
 }
 
@@ -104,6 +144,7 @@ export interface TextosStack {
 
 export interface Inicio {
   hero: TextosHero;
+  destacados: TextosDestacados;
   servicios: TextosServicios;
   casos: TextosCasos;
   stack: TextosStack;
@@ -111,6 +152,7 @@ export interface Inicio {
 
 export interface TextosInterfaz {
   cambiarTema: string;
+  ejemploIlustrativo: string;
   pie: string;
 }
 

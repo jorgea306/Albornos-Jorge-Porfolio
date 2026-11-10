@@ -60,33 +60,75 @@ export const content: Contenido = {
   },
   inicio: {
     hero: {
-      etiqueta: 'Desarrollador full stack freelance · Córdoba, Argentina',
-      titulo: 'Construyo agentes de IA y automatizaciones que le ahorran horas de trabajo a tu negocio',
-      principal: { texto: 'Ver proyectos', destino: `#${ANCLA.casos}` },
+      etiqueta: 'Disponible para proyectos · Córdoba, Argentina',
+      titulo: {
+        antes: 'Agentes de IA y automatizaciones que le ',
+        resaltado: 'devuelven horas',
+        despues: ' a tu negocio.',
+      },
+      descripcion:
+        'Desarrollador full stack especializado en backend con NestJS y en orquestación de agentes de IA. Conecto tus sistemas, automatizo lo repetitivo y dejo registro de cada acción.',
+      principal: { texto: 'Ver casos', destino: `#${ANCLA.casos}` },
       secundario: { texto: 'Contame tu problema', destino: `#${ANCLA.contacto}` },
+      // Datos ficticios: ningún nombre, producto ni precio pertenece a un cliente real.
+      consola: {
+        titulo: 'agente-ferreteria · log',
+        leyenda: 'del flujo de un agente con herramientas y auditoría',
+        lineas: [
+          { tipo: 'entrada', etiqueta: 'consulta', texto: 'WhatsApp: ¿Tienen tornillos para madera de 4 x 40? ¿Cuánto salen 200?' },
+          { tipo: 'evento', etiqueta: 'intención', texto: 'consulta_stock' },
+          { tipo: 'evento', etiqueta: 'herramienta', texto: 'buscar_producto("tornillo madera 4 x 40") → 1 resultado, 850 en stock' },
+          { tipo: 'evento', etiqueta: 'herramienta', texto: 'calcular_precio(cantidad: 200) → $ 18.400' },
+          { tipo: 'salida', etiqueta: 'respuesta', texto: 'Hay stock. 200 tornillos salen $ 18.400. ¿Te los reservo?' },
+          { tipo: 'ok', etiqueta: 'auditoría', texto: '#a91f · 3 acciones registradas' },
+        ],
+      },
+    },
+    // Los tres últimos datos no están confirmados por Jorge: llevan COMPLETAR y npm run verify los marca.
+    destacados: {
+      etiqueta: 'Datos destacados',
+      items: [
+        { valor: '652', descripcion: 'productos cargados en 6,5 minutos con un script' },
+        { valor: `4+ años ${COMPLETAR}`, descripcion: 'desarrollando software en producción' },
+        { valor: `Tech Lead ${COMPLETAR}`, descripcion: 'experiencia liderando el frontend en React' },
+        { valor: `Multiempresa ${COMPLETAR}`, descripcion: 'agentes con datos aislados y acciones auditadas' },
+      ],
     },
     servicios: {
       id: ANCLA.servicios,
-      titulo: 'Servicios',
+      encabezado: {
+        etiqueta: '01 / SERVICIOS',
+        titulo: 'Qué puedo resolver para vos',
+        bajada:
+          'Desde un script que ahorra una tarde de carga manual hasta una plataforma de agentes para varias empresas.',
+      },
       items: [
         {
           titulo: 'Agentes de IA',
           descripcion:
             'Asistentes que atienden consultas y ejecutan tareas dentro de tus sistemas, con registro de cada acción.',
+          icono: 'agente',
+          etiquetas: ['WhatsApp', 'Web', 'Herramientas'],
         },
         {
           titulo: 'APIs con NestJS y Node',
           descripcion:
             'Servicios de backend que conectan tu negocio con otras aplicaciones, con acceso seguro y datos ordenados.',
+          icono: 'api',
+          etiquetas: ['REST', 'JWT', 'OAuth2'],
         },
         {
           titulo: 'Interfaces con React',
           descripcion: 'Paneles y sitios web rápidos, pensados para verse bien en el celular y en la computadora.',
+          icono: 'interfaz',
+          etiquetas: ['Dashboards', 'Landings', 'Apps'],
         },
         {
           titulo: 'Automatizaciones',
           descripcion:
             'Tareas repetitivas que se ejecutan solas: cargas de datos, avisos e integraciones entre sistemas.',
+          icono: 'automatizacion',
+          etiquetas: ['Scripts', 'Webhooks', 'Cron'],
         },
       ],
     },
@@ -114,6 +156,7 @@ export const content: Contenido = {
   },
   interfaz: {
     cambiarTema: 'Cambiar entre tema claro y oscuro',
+    ejemploIlustrativo: 'Ejemplo ilustrativo',
     pie: '© 2026 Jorge Albornos · Córdoba, Argentina',
   },
   noEncontrado: {
