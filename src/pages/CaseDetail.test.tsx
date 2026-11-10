@@ -14,12 +14,16 @@ function mostrarCaso(slug: string) {
 }
 
 describe('CaseDetail: Caso A (plantilla completa)', () => {
-  it('muestra los bloques en orden: migas, h1 y artículos 01 a 04', () => {
+  it('muestra los bloques en orden: migas, h1, imagen, resultados, artículos 01 a 04, siguiente caso y tarjeta final', () => {
     const { container } = mostrarCaso(casoA.slug);
     const orden = [
       screen.getByRole('navigation', { name: content.navegacion.migas.etiqueta }),
       screen.getByRole('heading', { level: 1 }),
+      screen.getByText(content.detalle.medioPendiente),
+      screen.getByRole('list', { name: content.detalle.resultados }),
       ...Object.values(secciones).map((s) => container.querySelector(`#${s.id}`)!),
+      screen.getByRole('link', { name: new RegExp(content.detalle.siguiente) }),
+      screen.getByRole('link', { name: content.detalle.cta.accion }),
     ];
     for (let i = 1; i < orden.length; i++) {
       const sigue = orden[i - 1].compareDocumentPosition(orden[i]) & Node.DOCUMENT_POSITION_FOLLOWING;
@@ -33,6 +37,41 @@ describe('CaseDetail: Caso A (plantilla completa)', () => {
     const migas = screen.getByRole('navigation', { name: content.navegacion.migas.etiqueta });
     expect(within(migas).getByRole('link', { name: content.navegacion.migas.casos })).toHaveAttribute('href', '/#casos');
     expect(within(migas).getByText(casoA.titulo)).toHaveAttribute('aria-current', 'page');
+  });
+
+  it('la imagen principal pendiente aparece como recuadro rotulado entre el encabezado y los artículos', () => {
+    const { container } = mostrarCaso(casoA.slug);
+    const recuadro = screen.getByText(content.detalle.medioPendiente);
+    const h1 = screen.getByRole('heading', { level: 1 });
+    const primerArticulo = container.querySelector(`#${secciones.problema.id}`)!;
+    expect(h1.compareDocumentPosition(recuadro) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(recuadro.compareDocumentPosition(primerArticulo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(container.querySelector('img')).toBeNull();
+  });
+
+  it('el índice "En este caso" va antes de los artículos y enlaza a los 4', () => {
+    const { container } = mostrarCaso(casoA.slug);
+    const indice = screen.getByRole('navigation', { name: content.detalle.indice });
+    const primerArticulo = container.querySelector(`#${secciones.problema.id}`)!;
+    expect(indice.compareDocumentPosition(primerArticulo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    const hrefs = within(indice).getAllByRole('link').map((a) => a.getAttribute('href'));
+    expect(hrefs).toEqual(Object.values(secciones).map((s) => `#${s.id}`));
+  });
+
+  it('muestra las 4 tarjetas de resultado y la tarjeta final lleva a /#contacto', () => {
+    mostrarCaso(casoA.slug);
+    const resultados = screen.getByRole('list', { name: content.detalle.resultados });
+    expect(within(resultados).getAllByRole('listitem')).toHaveLength(4);
+    expect(screen.getByText(content.detalle.cta.pregunta)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: content.detalle.cta.accion })).toHaveAttribute('href', '/#contacto');
+  });
+
+  it('cierra con la tarjeta de Siguiente caso después del último artículo', () => {
+    const { container } = mostrarCaso(casoA.slug);
+    const siguiente = screen.getByRole('link', { name: new RegExp(content.detalle.siguiente) });
+    expect(siguiente).toHaveAttribute('href', '/casos/dallas-note');
+    const ultimo = container.querySelector(`#${secciones.aprendizajes.id}`)!;
+    expect(ultimo.compareDocumentPosition(siguiente) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it('los h2 son solo los 4 artículos, sin Decisiones, Tecnologías ni Arquitectura', () => {
@@ -76,6 +115,12 @@ describe('CaseDetail: variante corta y slug desconocido', () => {
     expect(screen.getByText(corto.metadatos.estado)).toBeInTheDocument();
     expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual([secciones.problema.titulo]);
     expect(container.querySelector('[data-diagrama]')).toBeNull();
+    expect(screen.queryByRole('navigation', { name: content.detalle.indice })).toBeNull();
+    expect(screen.queryByText(content.detalle.siguiente)).toBeNull();
+    expect(screen.queryByRole('list', { name: content.detalle.resultados })).toBeNull();
+    // La tarjeta final es igual que en los casos completos.
+    expect(screen.getByText(content.detalle.cta.pregunta)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: content.detalle.cta.accion })).toHaveAttribute('href', '/#contacto');
     expect(container.querySelector('[data-variante="corta"]')).not.toBeNull();
   });
 

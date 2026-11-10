@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { COMPLETAR, content, getCaseBySlug } from './content';
+import { COMPLETAR, content, getCaseBySlug, getSiguienteCaso } from './content';
 
 const RAIZ = process.cwd();
 const ARCHIVO_DENYLIST = join(RAIZ, 'confidencialidad.local.json');
@@ -198,5 +198,31 @@ describe('tono de los textos', () => {
   it('respeta el límite de palabra (regresión de la barra perdida en \\p{L})', () => {
     expect(contieneTuteo('el grupuedes raro')).toBe(false);
     expect(contieneTuteo('lo que {puedes}')).toBe(true);
+  });
+});
+
+describe('getSiguienteCaso', () => {
+  it('sigue el orden de content.casos entre los casos completos', () => {
+    expect(getSiguienteCaso('carga-masiva-productos')?.slug).toBe('dallas-note');
+    expect(getSiguienteCaso('dallas-note')?.slug).toBe('plataforma-agentes-ia');
+    expect(getSiguienteCaso('plataforma-agentes-ia')?.slug).toBe('api-usuarios-nestjs');
+  });
+
+  it('es circular: el último caso completo apunta al primero', () => {
+    expect(getSiguienteCaso('api-usuarios-nestjs')?.slug).toBe('carga-masiva-productos');
+  });
+
+  it('los casos cortos y los slugs desconocidos no tienen siguiente', () => {
+    expect(getSiguienteCaso('agente-whatsapp-ferreteria')).toBeUndefined();
+    expect(getSiguienteCaso('peluqueria-agente-ia')).toBeUndefined();
+    expect(getSiguienteCaso('no-existe')).toBeUndefined();
+    expect(getSiguienteCaso(undefined)).toBeUndefined();
+  });
+
+  it('nunca devuelve un caso corto ni uno en desarrollo', () => {
+    for (const caso of content.casos) {
+      const siguiente = getSiguienteCaso(caso.slug);
+      if (siguiente) expect([siguiente.variante, siguiente.estado]).toEqual(['completa', 'publicado']);
+    }
   });
 });

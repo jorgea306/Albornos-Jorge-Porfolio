@@ -246,9 +246,17 @@ export interface TextosDetalle {
   metadatos: { rol: string; stack: string; duracion: string; estado: string };
   // Nombre accesible de la fila de tarjetas de resultado.
   resultados: string;
+  // Rótulo que acompaña a la métrica de tipo `estimado`.
+  estimado: string;
   secciones: { problema: SeccionDetalle; solucion: SeccionDetalle; funciona: SeccionDetalle; aprendizajes: SeccionDetalle };
   // Subtítulo de la lista de decisiones dentro de "La solución".
   decisiones: string;
+  // Rótulo y nombre accesible del índice lateral del detalle.
+  indice: string;
+  // Rótulo de la tarjeta que lleva al caso siguiente.
+  siguiente: string;
+  // Rótulo del recuadro que ocupa el lugar de la imagen o el video principal mientras falta el archivo.
+  medioPendiente: string;
   // Tarjeta final con enlace a #contacto.
   cta: { pregunta: string; accion: string };
 }

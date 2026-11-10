@@ -1,8 +1,9 @@
 // Revisa build/client despues de `npm run build`. Falla (codigo 1) si:
 //  1. algun HTML no trae titulo, Open Graph y estilos de Emotion;
 //  2. algun HTML deja a la vista el marcador [COMPLETAR] (texto, atributos o <head>);
-//  3. algun archivo del build nombra a alguien de confidencialidad.local.json (si el archivo existe).
-// Con `--pendientes=aviso` (o VERCEL_ENV=preview) el chequeo 2 solo avisa: sirve para revisar slices y vistas previas.
+//  3. algun archivo del build nombra a alguien de confidencialidad.local.json (si el archivo existe);
+//  4. algun caso completo (data-variante="completa") no trae su diagrama (data-diagrama=).
+// Con `--pendientes=aviso` (o VERCEL_ENV=preview) los chequeos 2 y 4 solo avisan: sirve para revisar slices y vistas previas.
 // Uso con npm: `npm run verify -- --pendientes=aviso` (npm agrega el argumento al final del script).
 import { readdir, readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
@@ -49,6 +50,13 @@ function buscarPendientes(html) {
   return hallazgos;
 }
 
+// Un caso completo debe llevar su diagrama. Se mira solo el HTML visible (sin <script> ni <style>), igual que con los pendientes.
+// El script no importa src/content.ts: se apoya en los dos atributos que dejan CaseDetail y DiagramFrame.
+function faltaDiagrama(html) {
+  const visible = html.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, '');
+  return /data-variante="completa"/.test(visible) && !/data-diagrama=/.test(visible);
+}
+
 // Palabra completa y con mayusculas exactas. En un string normal el limite de palabra se escribe '\\b'.
 function nombraA(texto, nombre) {
   const escapado = nombre.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -77,6 +85,12 @@ for (const archivo of archivosHtml) {
   const nombre = relative(RAIZ, archivo);
   const faltantes = REQUISITOS.filter(([, patron]) => !patron.test(html)).map(([n]) => n);
   const pendientes = buscarPendientes(html);
+  const sinDiagrama = faltaDiagrama(html);
+  if (sinDiagrama) {
+    // Como los pendientes: hasta el slice 8 hay casos completos sin diagrama, y con --pendientes=aviso solo se avisa.
+    if (!soloAvisar) fallas++;
+    console.error(`${soloAvisar ? 'AVISO' : 'FALLA'} ${nombre}: es un caso completo y no tiene data-diagrama`);
+  }
   if (faltantes.length > 0) {
     fallas++;
     console.error(`FALLA ${nombre}: falta ${faltantes.join(', ')}`);
@@ -85,7 +99,7 @@ for (const archivo of archivosHtml) {
     if (!soloAvisar) fallas++;
     console.error(`${soloAvisar ? 'AVISO' : 'FALLA'} ${nombre}: ${MARCADOR} en ${pendiente}`);
   }
-  if (faltantes.length === 0 && pendientes.length === 0) console.log(`OK    ${nombre}`);
+  if (faltantes.length === 0 && pendientes.length === 0 && !sinDiagrama) console.log(`OK    ${nombre}`);
 }
 
 const denylist = await leerDenylist();

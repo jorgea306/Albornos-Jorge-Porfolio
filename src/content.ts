@@ -24,7 +24,7 @@ function imagenTarjeta(alt: string): Medio {
 // Los textos largos de cada caso se completan en los slices 7 y 8; aqui la identidad, el estado y lo que muestra el Inicio.
 function casoBase(
   datos: Pick<Caso, 'slug' | 'titulo' | 'resumen' | 'estado' | 'variante'> &
-    Partial<Omit<Caso, 'slug' | 'titulo' | 'resumen' | 'estado' | 'variante' | 'seo' | 'medios'>>,
+    Partial<Omit<Caso, 'slug' | 'titulo' | 'resumen' | 'estado' | 'variante' | 'seo'>>,
 ): Caso {
   // Valores por defecto: lo que no se pasa queda como pendiente. Los datos recibidos pisan estos valores.
   return {
@@ -246,6 +246,10 @@ export const content: Contenido = {
   detalle: {
     metadatos: { rol: 'Rol', stack: 'Stack', duracion: 'Duración', estado: 'Estado' },
     resultados: 'Resultados',
+    estimado: 'Estimado',
+    indice: 'En este caso',
+    siguiente: 'SIGUIENTE CASO →',
+    medioPendiente: 'Captura pendiente',
     secciones: {
       problema: { id: 'el-problema', titulo: 'El problema' },
       solucion: { id: 'la-solucion', titulo: 'La solución' },
@@ -313,6 +317,17 @@ export const content: Contenido = {
         { valor: '2.608 min', etiqueta: 'estimado a mano: 652 productos × 4 min', tipo: 'estimado' },
         { valor: '2', etiqueta: 'columnas de entrada', tipo: 'medido' },
       ],
+      // Imagen principal del detalle (1200×480). Jorge la exporta a public/casos/carga-masiva-productos/principal.webp y pasa `pendiente` a false.
+      medios: [
+        {
+          tipo: 'imagen',
+          archivo: 'principal.webp',
+          alt: 'Planilla de dos columnas y tienda online con los 652 productos cargados',
+          ancho: 1200,
+          alto: 480,
+          pendiente: true,
+        },
+      ],
       aprendizajes: [
         'Estimar el tiempo de la carga manual antes de automatizar da un punto de comparación; por eso las 43,5 horas figuran como estimado.',
         'Pedir lo mínimo como entrada (dos columnas) vuelve el script más fácil de usar y de volver a ejecutar cuando cambia el catálogo.',
@@ -366,4 +381,14 @@ export const content: Contenido = {
 
 export function getCaseBySlug(slug: string | undefined): Caso | undefined {
   return content.casos.find((caso) => caso.slug === slug);
+}
+
+// Caso que sigue al actual en el orden de `content.casos`, mirando solo los casos completos y publicados.
+// Es circular: después del último vuelve al primero. Un caso corto o un slug desconocido no tiene siguiente.
+export function getSiguienteCaso(slug: string | undefined): Caso | undefined {
+  const elegibles = content.casos.filter((caso) => caso.variante === 'completa' && caso.estado === 'publicado');
+  const posicion = elegibles.findIndex((caso) => caso.slug === slug);
+  if (posicion === -1) return undefined;
+  const siguiente = elegibles[(posicion + 1) % elegibles.length];
+  return siguiente.slug === slug ? undefined : siguiente;
 }
