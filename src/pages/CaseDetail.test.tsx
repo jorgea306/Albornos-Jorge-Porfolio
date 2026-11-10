@@ -131,7 +131,7 @@ describe('CaseDetail: variante corta y slug desconocido', () => {
   });
 });
 
-describe('CaseDetail: los 4 casos completos y los 2 cortos', () => {
+describe('CaseDetail: los 5 casos completos y los 2 cortos', () => {
   const completos = content.casos.filter((c) => c.variante === 'completa');
   const cortos = content.casos.filter((c) => c.variante === 'corta');
 
@@ -157,7 +157,7 @@ describe('CaseDetail: los 4 casos completos y los 2 cortos', () => {
     expect(within(screen.getByRole('list', { name: content.detalle.resultados })).getAllByRole('listitem')).toHaveLength(1);
   });
 
-  it('Siguiente caso recorre A → Dallas → Plataforma → API → A', () => {
+  it('Siguiente caso recorre A → Dallas → Plataforma → API → Carga de visitas → A', () => {
     for (const [i, caso] of completos.entries()) {
       mostrarCaso(caso.slug);
       const destino = completos[(i + 1) % completos.length].slug;
@@ -186,19 +186,19 @@ describe('CaseDetail: los 4 casos completos y los 2 cortos', () => {
     expect(forma(cortos[0].slug)).toEqual(forma(completos[0].slug));
   });
 
-  it('los 6 casos tienen h1 y título de la pestaña distintos', () => {
+  it('los 7 casos tienen h1 y título de la pestaña distintos', () => {
     const h1 = content.casos.map((caso) => {
       mostrarCaso(caso.slug);
       const texto = screen.getByRole('heading', { level: 1 }).textContent;
       cleanup();
       return texto;
     });
-    expect(new Set(h1).size).toBe(6);
+    expect(new Set(h1).size).toBe(7);
     const titulos = content.casos.map((caso) => {
       const entradas = meta({ params: { slug: caso.slug } } as never) as { title?: string }[];
       return entradas.find((entrada) => entrada.title)?.title;
     });
     expect(titulos.every(Boolean)).toBe(true);
-    expect(new Set(titulos).size).toBe(6);
+    expect(new Set(titulos).size).toBe(7);
   });
 });

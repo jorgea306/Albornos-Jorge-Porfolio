@@ -18,7 +18,7 @@ describe('NextCase', () => {
   });
 
   it('es circular: desde el último caso completo vuelve al Caso A', () => {
-    mostrarSiguiente('api-usuarios-nestjs');
+    mostrarSiguiente('carga-visitas-contactos');
     expect(screen.getByRole('link')).toHaveAttribute('href', '/casos/carga-masiva-productos');
   });
 

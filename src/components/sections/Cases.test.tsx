@@ -46,7 +46,7 @@ describe('Cases', () => {
   it('los casos en desarrollo solo aparecen en el Laboratorio, sin tarjeta ni imagen', () => {
     mostrarConTema(<Cases />);
     const enDesarrollo = content.casos.filter((c) => c.estado === 'en-desarrollo');
-    expect(enDesarrollo).toHaveLength(2);
+    expect(enDesarrollo).toHaveLength(3);
     for (const caso of enDesarrollo) {
       const enlace = screen.getByRole('link', { name: caso.titulo });
       expect(enlace.closest('article'), caso.slug).toBeNull();

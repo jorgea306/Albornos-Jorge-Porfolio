@@ -20,6 +20,11 @@ describe('Lab', () => {
       'href',
       '/casos/peluqueria-agente-ia',
     );
+    expect(screen.getByRole('link', { name: 'Carga de visitas y contactos' })).toHaveAttribute(
+      'href',
+      '/casos/carga-visitas-contactos',
+    );
+    expect(screen.getAllByRole('link')).toHaveLength(3);
   });
 
   it('no usa tarjetas ni imágenes', () => {

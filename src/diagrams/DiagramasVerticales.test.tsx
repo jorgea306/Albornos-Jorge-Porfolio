@@ -4,12 +4,13 @@ import { getCaseBySlug } from '../content';
 import { mostrarConTema } from '../test/render';
 import { diagramas } from './index';
 
-// Los tres diagramas verticales comparten el contrato: figura con data-diagrama, SVG con role="img", title y desc,
+// Los cuatro diagramas verticales comparten el contrato: figura con data-diagrama, SVG con role="img", title y desc,
 // y los pasos en el orden del texto "03 · Cómo funciona".
 const CASOS = [
   { slug: 'dallas-note', pasos: ['Web', 'API', 'Base de datos', 'Avisos'] },
   { slug: 'plataforma-agentes-ia', pasos: ['Usuario de una empresa', 'Backend NestJS', 'Motor de IA', 'Herramientas', 'Auditoría'] },
   { slug: 'api-usuarios-nestjs', pasos: ['Cliente', 'Validación', 'Servicio (MongoDB)', 'Swagger'] },
+  { slug: 'carga-visitas-contactos', pasos: ['Usuario', 'API NestJS', 'Aislamiento', 'PostgreSQL'] },
 ];
 
 describe.each(CASOS)('Diagrama de $slug', ({ slug, pasos }) => {

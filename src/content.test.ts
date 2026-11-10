@@ -33,12 +33,13 @@ describe('content.ts', () => {
     }
   });
 
-  it('ordena los casos como pide la spec: A, Dallas Note, Plataforma, API y luego los de desarrollo', () => {
+  it('ordena los casos: A, Dallas Note, Plataforma, API, Carga de visitas y luego los dos cortos', () => {
     expect(content.casos.map((c) => c.slug)).toEqual([
       'carga-masiva-productos',
       'dallas-note',
       'plataforma-agentes-ia',
       'api-usuarios-nestjs',
+      'carga-visitas-contactos',
       'agente-whatsapp-ferreteria',
       'peluqueria-agente-ia',
     ]);
@@ -203,13 +204,19 @@ describe('tono de los textos', () => {
   });
 });
 
-const COMPLETOS = ['carga-masiva-productos', 'dallas-note', 'plataforma-agentes-ia', 'api-usuarios-nestjs'];
+const COMPLETOS = [
+  'carga-masiva-productos',
+  'dallas-note',
+  'plataforma-agentes-ia',
+  'api-usuarios-nestjs',
+  'carga-visitas-contactos',
+];
 
 describe('casos completos y cortos', () => {
   const completos = content.casos.filter((c) => c.variante === 'completa');
   const cortos = content.casos.filter((c) => c.variante === 'corta');
 
-  it('los 4 casos completos son los esperados', () => {
+  it('los 5 casos completos son los esperados', () => {
     expect(completos.map((c) => c.slug)).toEqual(COMPLETOS);
   });
 
@@ -251,7 +258,28 @@ describe('casos completos y cortos', () => {
     expect(dallas.aprendizajes[0]).toContain(COMPLETAR);
     const plataforma = getCaseBySlug('plataforma-agentes-ia')!;
     expect(plataforma.solucion.find((d) => d.includes('JWT'))).toContain(COMPLETAR);
-    expect(plataforma.metadatos.duracion).toContain('Global');
+    expect(plataforma.metadatos.duracion).toBe('Marzo – septiembre de 2026');
+    expect(plataforma.metadatos.stack).toContain(COMPLETAR);
+  });
+
+  it('la Plataforma suma el orquestador, el clasificador y las integraciones sin nombres internos de la empresa', () => {
+    const texto = getCaseBySlug('plataforma-agentes-ia')!.solucion.join(' ');
+    expect(texto).toContain('orquestador');
+    expect(texto).toContain('clasificador');
+    expect(texto).toContain('clientes, contactos, calendario y tareas');
+    expect(texto).not.toMatch(/SIC|CRM core/);
+  });
+
+  it('Carga de visitas y contactos está en desarrollo con detalle completo, 2 métricas y todo lo a confirmar con COMPLETAR', () => {
+    const caso = getCaseBySlug('carga-visitas-contactos')!;
+    expect([caso.estado, caso.variante, caso.metadatos.estado]).toEqual(['en-desarrollo', 'completa', 'En desarrollo']);
+    expect(caso.imagenTarjeta).toBeUndefined();
+    expect(caso.arquitectura?.diagrama).toBe('carga-visitas');
+    expect(caso.resultados?.map((m) => m.valor)).toEqual(['2', '188']);
+    for (const metrica of caso.resultados!) expect(metrica.etiqueta).toContain(COMPLETAR);
+    for (const aprendizaje of caso.aprendizajes) expect(aprendizaje).toContain(COMPLETAR);
+    expect([caso.metadatos.rol, caso.metadatos.duracion].every((d) => d.includes(COMPLETAR))).toBe(true);
+    expect(caso.solucion).toHaveLength(7);
   });
 
   it('los casos cortos no tienen arquitectura, aprendizajes ni resultados', () => {
@@ -263,7 +291,7 @@ describe('casos completos y cortos', () => {
 });
 
 describe('getSiguienteCaso', () => {
-  it('recorre el ciclo completo A → Dallas → Plataforma → API → A', () => {
+  it('recorre el ciclo completo A → Dallas → Plataforma → API → Carga de visitas → A', () => {
     const recorrido = [COMPLETOS[0]];
     for (let i = 0; i < COMPLETOS.length; i++) recorrido.push(getSiguienteCaso(recorrido.at(-1))!.slug);
     expect(recorrido).toEqual([...COMPLETOS, COMPLETOS[0]]);
@@ -273,10 +301,11 @@ describe('getSiguienteCaso', () => {
     expect(getSiguienteCaso('carga-masiva-productos')?.slug).toBe('dallas-note');
     expect(getSiguienteCaso('dallas-note')?.slug).toBe('plataforma-agentes-ia');
     expect(getSiguienteCaso('plataforma-agentes-ia')?.slug).toBe('api-usuarios-nestjs');
+    expect(getSiguienteCaso('api-usuarios-nestjs')?.slug).toBe('carga-visitas-contactos');
   });
 
   it('es circular: el último caso completo apunta al primero', () => {
-    expect(getSiguienteCaso('api-usuarios-nestjs')?.slug).toBe('carga-masiva-productos');
+    expect(getSiguienteCaso('carga-visitas-contactos')?.slug).toBe('carga-masiva-productos');
   });
 
   it('los casos cortos y los slugs desconocidos no tienen siguiente', () => {
@@ -286,10 +315,10 @@ describe('getSiguienteCaso', () => {
     expect(getSiguienteCaso(undefined)).toBeUndefined();
   });
 
-  it('nunca devuelve un caso corto ni uno en desarrollo', () => {
+  it('nunca devuelve un caso corto', () => {
     for (const caso of content.casos) {
       const siguiente = getSiguienteCaso(caso.slug);
-      if (siguiente) expect([siguiente.variante, siguiente.estado]).toEqual(['completa', 'publicado']);
+      if (siguiente) expect(siguiente.variante).toBe('completa');
     }
   });
 });
