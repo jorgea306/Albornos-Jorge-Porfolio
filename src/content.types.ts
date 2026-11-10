@@ -1,6 +1,6 @@
 // Tipos de src/content.ts. Contrato definido en el diseno (sdd/portfolio/design).
 
-export type DiagramId = 'carga-masiva' | 'agentes-multiempresa' | 'dallas-note' | 'api-usuarios';
+export type DiagramId = 'carga-masiva' | 'agentes-multiempresa' | 'dallas-note' | 'api-usuarios' | 'carga-visitas';
 
 // Una tarjeta de resultado: un número y lo que significa. Sin "antes/después": el valor estimado es su propia tarjeta.
 export interface Metrica {

@@ -43,3 +43,5 @@ Términos técnicos que aparecen en los artefactos del portfolio, explicados con
 | DTO (Data Transfer Object, objeto de transferencia de datos) | Clase que describe la forma de los datos que entran a un endpoint y los valida antes de tocar la base. Aparece en el caso `api-usuarios-nestjs`. |
 | Monorepo | Un solo repositorio con varias aplicaciones. En Dallas Note, la API y la web viven juntas y comparten tipos de TypeScript. |
 | SVG con `role="img"` | Dibujo vectorial que el lector de pantalla trata como una imagen y nombra con su `<title>` y `<desc>`. `DiagramaVertical.tsx` lo usa para que el orden de los pasos se entienda sin ver el dibujo. |
+| Borrado lógico (soft delete) | Marcar un registro como borrado sin eliminarlo de la base, para poder recuperarlo. El caso `carga-visitas-contactos` lo usa en los contactos. |
+| Aislamiento por usuario | Regla que limita cada consulta a los datos del usuario que la hace. En `carga-visitas-contactos`, un vendedor ve solo sus contactos y el administrador ve todos. |
